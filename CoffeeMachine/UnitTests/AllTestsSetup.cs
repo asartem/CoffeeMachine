@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.IO;
+using Domain;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NUnit.Framework;
-using System;
-using System.IO;
-using System.Reflection;
 
-namespace SC.ShipmentDrafts.IntegrationTests
+namespace Tests
 {
     [SetUpFixture]
     public class AllTestsSetup
@@ -20,7 +20,11 @@ namespace SC.ShipmentDrafts.IntegrationTests
         public AllTestsSetup()
         {
             //NOTE: Env variables don't work for tests. Details: https://thebrokentest.com/managing-config-in-net-core/
-
+#if PROD
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Test");
+#else 
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+#endif
         }
 
 
@@ -29,8 +33,21 @@ namespace SC.ShipmentDrafts.IntegrationTests
         {
             ServiceCollection = GetServiceCollectionWithCommonSettings();
 
-
-            SetupPreDefinedTestData();
+            try
+            {
+                var serviceProvider = ServiceCollection.BuildServiceProvider();
+                var configuration = serviceProvider.GetService<IConfiguration>();
+                ServiceCollection.RegisterDalServices(configuration);
+                serviceProvider.Dispose();
+                serviceProvider = null;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+           
+            //SetupPreDefinedTestData();
 
         }
 
@@ -58,7 +75,6 @@ namespace SC.ShipmentDrafts.IntegrationTests
 
             IConfiguration hostConfiguration = configurationBuilder.Build();
             serviceCollection.TryAddSingleton(hostConfiguration);
-
 
             return serviceCollection;
         }

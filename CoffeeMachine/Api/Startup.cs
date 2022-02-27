@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +11,7 @@ using System.Net;
 using System.Reflection;
 using Api.Application.ApiVersion;
 using Api.Common.ExceptionHandling;
-using Microsoft.IdentityModel.Tokens;
+using Domain;
 using Newtonsoft.Json;
 
 namespace Api
@@ -69,8 +68,10 @@ namespace Api
                 });
 
             services.AddAutoMapper(typeof(Startup).Assembly);
+            services.RegisterDalServices(Configuration);
 
-            AddJwtTokenAuthentication(services);
+
+            //AddJwtTokenAuthentication(services);
 
             //services.RegisterShipmentDraftsServices((scopedProvider) =>
             //{

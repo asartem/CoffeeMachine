@@ -1,47 +1,57 @@
-﻿using System.Collections.Generic;
-using Domain.Common.Dal;
-using Domain.Products.Repositories;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Domain.Products;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
 namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 {
     [TestFixture]
-    public class GetMethodTests
+    public class GetMethodTests : AllTestsSetup
     {
-        private string connectionString = "";
-        private readonly ProductsRepository repository = new ProductsRepository(new DbConnectionProvider(""));
+
         private IList<Product> existingProducts;
+        protected IServiceProvider ServiceProvider;
 
         public GetMethodTests()
         {
-            existingProducts = CreateTestProducts();
+            ServiceProvider = ServiceCollection.BuildServiceProvider();
+            var repository = ServiceProvider.GetService<IProductsRepository>();
+            existingProducts = repository.GetAll().ToList();
         }
-        
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            // Create test data here
+        }
 
         [Test]
-        public void GetProduct()
+        public async Task ProductId_ExpectedProduct()
         {
-            
 
-            repository.Get(1);
+            var repository = ServiceProvider.GetService<IProductsRepository>();
+            var expectedProduct = existingProducts.First();
+            var result = await repository.GetAsync(expectedProduct.Id);
+            Assert.AreEqual(expectedProduct.Id, result.Id);
+            Assert.AreEqual(expectedProduct.Name, result.Name);
+            Assert.AreEqual(expectedProduct.User, result.User);
+            Assert.IsNotNull(result.Name);
+            Assert.IsNotNull(result.User);
+
         }
 
-
-        public IList<Product> CreateTestProducts()
+        [Test]
+        public async Task Empty_AllProducts()
         {
-            IList<Product> products = new List<Product>();
 
-            for (int i = 0; i < 10; i++)
-            {
-                Product nextProduct = new Product("Product #" + i);
-                products.Add(nextProduct);
+            var repository = ServiceProvider.GetService<IProductsRepository>();
+            var result = await repository.GetAllAsync();
+            Assert.AreEqual(existingProducts, result.Count());
 
-
-            }
-
-
-            
-            return products;
         }
+        
     }
 }
