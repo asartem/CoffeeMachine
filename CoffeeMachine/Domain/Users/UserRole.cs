@@ -7,7 +7,7 @@ namespace Domain.Users
         public int Id { get; set; }
         public string Name { get; set; }
 
-        protected UserRole()
+        public UserRole()
         {
 
         }

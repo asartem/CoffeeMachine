@@ -3,6 +3,7 @@ using System.Data;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Api.Common.CustomExceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -65,11 +66,19 @@ namespace Api.Common.ExceptionHandling
 
             string errorMessage = exception.Message;
 
+            
             if (exception is ApplicationException)
             {
                 responseStatusCode = HttpStatusCode.UnprocessableEntity;
-                errorMessage = $"Invalid order. {errorMessage}";
+                errorMessage = $"Invalid entity. {errorMessage}";
             }
+
+            if (exception is EntityNotFoundException)
+            {
+                responseStatusCode = HttpStatusCode.NotFound;
+                errorMessage = exception.Message;
+            }
+
 
             if (string.IsNullOrWhiteSpace(context.Response.ContentType))
             {

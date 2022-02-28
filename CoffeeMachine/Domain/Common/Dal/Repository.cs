@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Common.Dal
 {
-    public abstract class Repository<T> : IRepository<T> where T : class, IEntity
+    public abstract class Repository<T> : IRepository<T> where T : class, IEntity, new()
     {
         public readonly ApplicationContext Context;
 
@@ -110,10 +110,40 @@ namespace Domain.Common.Dal
             }
             else
             {
+                DetachLocal(entity, entity.Id);
                 Context.Set<T>().Update(entity);
             }
             await Context.SaveChangesAsync();
         }
-        
+
+        public async Task RemoveAsync(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            if (entity.Id < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(entity.Id));
+            }
+            
+            DetachLocal(entity, entity.Id);
+            Context.Set<T>().Remove(entity);
+            await Context.SaveChangesAsync();
+        }
+
+
+        protected void DetachLocal(T t, int entryId)
+        {
+            var local = Context.Set<T>()
+                .Local
+                .FirstOrDefault(entry => entry.Id == entryId);
+
+            if (local != null)
+            {
+                Context.Entry(local).State = EntityState.Detached;
+            }
+            Context.Entry(t).State = EntityState.Modified;
+        }
     }
 }

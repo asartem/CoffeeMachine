@@ -11,7 +11,7 @@ namespace Domain.Products
         public User User { get; set; }
         public int UserId { get; set; }
 
-        protected Product(){}
+        public Product(){}
         public Product(string name, int userId)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -21,11 +21,10 @@ namespace Domain.Products
             UserId = userId;
         }
 
-        //public Product(int id, string name) : this(name)
-        //{
-        //    if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
-
-        //    Id = id;
-        //}
+        public Product(int id, string name, int userId):this(name,userId)
+        {
+            if (id <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+            Id = id;
+        }
     }
 }

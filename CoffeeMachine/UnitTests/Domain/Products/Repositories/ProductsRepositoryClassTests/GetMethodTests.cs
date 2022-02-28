@@ -49,7 +49,7 @@ namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
             var repository = ServiceProvider.GetService<IProductsRepository>();
             var result = await repository.GetAllAsync();
-            Assert.AreEqual(existingProducts, result.Count());
+            Assert.AreEqual(existingProducts.Count, result.Count());
 
         }
         

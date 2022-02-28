@@ -1,4 +1,5 @@
-﻿using Domain.Common.Models;
+﻿using System;
+using Domain.Common.Models;
 
 namespace Domain.Users
 {
@@ -9,13 +10,18 @@ namespace Domain.Users
         public string Password { get; set; }
         public string Email { get;  set;}
         public UserRole Role { get;  set;}
-        
-        //public ICollection<Product> Products { get; protected set;}
-
 
         public User()
         {
 
+        }
+
+        public User(string name, string password, string email, UserRole role)
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Password = password ?? throw new ArgumentNullException(nameof(password));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+            Role = role ?? throw new ArgumentNullException(nameof(role));
         }
     }
 }

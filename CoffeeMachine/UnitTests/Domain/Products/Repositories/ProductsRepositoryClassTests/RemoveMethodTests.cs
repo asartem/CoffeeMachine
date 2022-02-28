@@ -68,6 +68,32 @@ namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
         }
 
+        [Test]
+        public async Task Id_Removed()
+        {
+
+            var repository = ServiceProvider.GetService<IProductsRepository>();
+            var usersRepository = ServiceProvider.GetService<IUsersRepository>();
+
+            var allUsers = await usersRepository.GetAllAsync();
+            var firstUser = allUsers.First();
+
+            Product product = new Product(TestProductName, firstUser.Id);
+            await repository.AddAsync(product);
+            var allProductsAfterSave = await repository.GetAllAsync();
+            var createdItem = allProductsAfterSave.First(x => x.Name == product.Name);
+            
+            await repository.RemoveAsync(createdItem);
+
+            allProductsAfterSave = await repository.GetAllAsync();
+            var removedItem = allProductsAfterSave.FirstOrDefault(x => x.Name == product.Name);
+
+            Assert.IsNotNull(createdItem);
+            Assert.IsNull(removedItem);
+            
+
+        }
+
 
 
     }
