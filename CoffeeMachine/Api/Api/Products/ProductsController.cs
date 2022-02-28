@@ -2,21 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cm.Api.Api.Authentication;
+using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Products.Models;
 using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
 using Cm.Domain.Products;
+using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace Cm.Api.Api.Products
 {
     /// <summary>
-    /// Returns shipment drafts
+    /// Returns products
     /// </summary>
     [Route("/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class ProductsController : ApiControllerBase
     {
@@ -24,16 +30,24 @@ namespace Cm.Api.Api.Products
         /// Products repository
         /// </summary>
         public IProductsRepository ProductsRepository { get; }
-        
+
+        /// <summary>
+        /// Users repository
+        /// </summary>
+        public IUsersRepository UsersRepository { get; }
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="productsRepository"></param>
+        /// <param name="usersRepository"></param>
         /// <param name="logger"></param>
         public ProductsController(IProductsRepository productsRepository,
-                                  ILogger<ProductsController> logger) : base(logger)
+                                    IUsersRepository usersRepository,
+                                    ILogger<ProductsController> logger) : base(logger)
         {
             ProductsRepository = productsRepository ?? throw new ArgumentNullException(nameof(productsRepository));
+            UsersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
 
         }
 
@@ -45,6 +59,7 @@ namespace Cm.Api.Api.Products
         /// <response code="200">Returns the existing product </response>
         /// <response code="204">If product was not found</response> 
         [HttpGet, Route("{id}")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Produces("application/json")]
@@ -58,16 +73,15 @@ namespace Cm.Api.Api.Products
                 return NotFound();
             }
 
-            //int companyId = User.Identity.GetClaimValue<int>(ClaimTypes.CompanyId);
             Product product = await ProductsRepository.GetAsync(id);
-            
+
             if (product == null)
             {
                 Logger.LogError($"Product with {id} doesn't exist.");
                 return NoContent();
             }
 
-            ProductDto result = new ProductDto(product);
+            var result = new ProductDto(product);
 
             Logger.LogDebug($"Product {id} was successfully returned.");
             return result;
@@ -76,21 +90,20 @@ namespace Cm.Api.Api.Products
         /// <summary>
         /// Returns all products
         /// </summary>
-        /// <param name="id">id of the product</param>
         /// <returns>Product for coffee machine</returns>
         /// <response code="200">Returns the existing product </response>
         /// <response code="204">If product was not found</response> 
         [HttpGet, Route("")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [Produces("application/json")]
         public async Task<ActionResult<ICollection<ProductDto>>> GetAllProductAsync()
         {
             Logger.LogDebug("Get all products.");
-            
-            //int companyId = User.Identity.GetClaimValue<int>(ClaimTypes.CompanyId);
-            var products = (await ProductsRepository.GetAllAsync()).ToList();
-            
+
+            List<Product> products = (await ProductsRepository.GetAllAsync()).ToList();
+
             if (products.Any() == false)
             {
                 Logger.LogError("There are no products");
@@ -112,13 +125,14 @@ namespace Cm.Api.Api.Products
         /// <response code="201">If product was created</response>
         /// <response code="400">If request body is null or invalid</response>   
         [HttpPost, Route("")]
+        [Authorize(Roles = UserRoles.Seller)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
         public async Task<ActionResult> CreateProductAsync([FromBody] CreateProductDto model)
         {
             Logger.LogDebug($"Create Product {model?.Name}.");
-            
+
             if (model == null)
             {
                 string errorMsg = "Product entity was not provided.";
@@ -126,8 +140,9 @@ namespace Cm.Api.Api.Products
                 return BadRequest(errorMsg);
             }
 
-            int userId = 1;
-            Product product = model.ToEntity(userId);
+            int userId = User.Identity.Id();
+            User user = await UsersRepository.GetAsync(userId);
+            Product product = model.ToEntity(user);
 
             await ProductsRepository.AddAsync(product);
 
@@ -145,13 +160,14 @@ namespace Cm.Api.Api.Products
         /// <response code="201">If product was created</response>
         /// <response code="400">If request body is null or invalid</response>   
         [HttpPut, Route("{id}")]
+        [Authorize(Roles = UserRoles.Seller)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
         public async Task<ActionResult> UpdateProductAsync(int id, [FromBody] UpdateProductDto model)
         {
             Logger.LogDebug($"Update Product {model?.Name}.");
-            
+
             if (model == null)
             {
                 string errorMsg = "Product entity was not provided.";
@@ -183,6 +199,7 @@ namespace Cm.Api.Api.Products
         /// <response code="204">If there is nothing to delete</response>
         /// <response code="400">If request body is null or invalid</response>   
         [HttpDelete, Route("{id}")]
+        [Authorize(Roles = UserRoles.Seller)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -190,7 +207,7 @@ namespace Cm.Api.Api.Products
         public async Task<ActionResult> DeleteProductAsync(int id)
         {
             Logger.LogDebug($"Delete product with id {id}.");
-            
+
             Product existingProduct = await ProductsRepository.GetAsync(id);
             if (existingProduct == null)
             {

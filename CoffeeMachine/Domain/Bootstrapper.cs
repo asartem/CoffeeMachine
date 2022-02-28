@@ -1,6 +1,8 @@
-﻿using Cm.Domain.Common.Dal;
+﻿using System;
+using Cm.Domain.Common.Dal;
 using Cm.Domain.Products;
 using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +23,9 @@ namespace Cm.Domain
                     b =>
                         b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
             
-            //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
-            
         }
     }
 }

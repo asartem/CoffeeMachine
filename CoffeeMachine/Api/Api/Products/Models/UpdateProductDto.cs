@@ -11,7 +11,7 @@ namespace Cm.Api.Api.Products.Models
         /// <summary>
         /// Price of the product
         /// </summary>
-        public new decimal? Price { get; set; }
+        public new int? Price { get; set; }
         
         /// <summary>
         /// Quantity

@@ -52,7 +52,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var allUsers = await usersRepository.GetAllAsync();
             var firstUser = allUsers.First();
 
-            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
+            Product product = new Product(TestProductName, firstUser, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
             var createdItem = allProductsAfterSave.FirstOrDefault(x => x.Name == product.Name);
@@ -78,7 +78,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var allUsers = await usersRepository.GetAllAsync();
             var firstUser = allUsers.First();
 
-            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
+            Product product = new Product(TestProductName, firstUser, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
             var createdItem = allProductsAfterSave.First(x => x.Name == product.Name);

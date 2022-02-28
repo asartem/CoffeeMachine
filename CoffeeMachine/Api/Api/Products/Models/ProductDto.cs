@@ -14,12 +14,7 @@ namespace Cm.Api.Api.Products.Models
         /// Id of the product
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Id of the owner
-        /// </summary>
-        public int UserId { get; set; }
-
+        
 
         /// <summary>
         /// Creates instance of the dto
@@ -42,7 +37,6 @@ namespace Cm.Api.Api.Products.Models
 
             Id = entity.Id;
             Name = entity.Name;
-            UserId = entity.UserId;
             Price = entity.Price;
             Quantity = entity.Qty;
         }

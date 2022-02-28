@@ -2,15 +2,23 @@
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
+using Cm.Api.Api.Authentication;
+using Cm.Api.Api.Authentication.Services;
 using Cm.Api.Application.ApiVersion;
+using Cm.Api.Application.Settings;
 using Cm.Api.Common.ExceptionHandling;
 using Cm.Domain;
+using Cm.Domain.Common.Dal;
+using Cm.Domain.Users.Roles;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -67,11 +75,9 @@ namespace Cm.Api
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                 });
 
-            services.AddAutoMapper(typeof(Startup).Assembly);
             services.RegisterDalServices(Configuration);
 
-
-            //AddJwtTokenAuthentication(services);
+            AddJwtTokenAuthentication(services);
 
             //services.RegisterShipmentDraftsServices((scopedProvider) =>
             //{
@@ -128,28 +134,31 @@ namespace Cm.Api
         /// <param name="services"></param>
         private void AddJwtTokenAuthentication(IServiceCollection services)
         {
-            //var jwtConf = new { Secret = "" };//Configuration.GetSection("SC:Auth:Jwt").Get<JwtOptions>(config => config.BindNonPublicProperties = true);
-            //var key = System.Text.Encoding.ASCII.GetBytes(jwtConf.Secret);
-            //services
-            //    .AddAuthentication(x =>
-            //    {
-            //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    })
-            //    .AddJwtBearer(x =>
-            //    {
-            //        // HACK: Custom token parser to translate SC.Web.Auth token format into proper ClaimsIdentity-based SecurityTokenDescriptor
-            //        //x.RequireHttpsMetadata = false;
-            //        //x.SaveToken = true;
-            //        //x.TokenValidationParameters = new TokenValidationParameters
-            //        //{
-            //        //    ValidateIssuerSigningKey = true,
-            //        //    IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        //    ValidateIssuer = false,
-            //        //    ValidateAudience = false
-            //        //};
-            //    });
+            IConfigurationSection appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
 
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
         }
 
     }

@@ -22,8 +22,7 @@ namespace Cm.HostService
     public class Program
     {
         private static ILogger log;
-
-#pragma warning disable CS1591
+        
         /// <summary>
         /// Entry point for service
         /// </summary>
@@ -54,7 +53,6 @@ namespace Cm.HostService
                 LogManager.Shutdown();
             }
         }
-#pragma warning restore CS1591
 
         /// <summary>
         /// Builds host

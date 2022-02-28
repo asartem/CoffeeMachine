@@ -2,6 +2,7 @@
 using System.Data;
 using System.Net;
 using System.Net.Mime;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Cm.Api.Common.CustomExceptions;
 using Microsoft.AspNetCore.Http;
@@ -79,6 +80,11 @@ namespace Cm.Api.Common.ExceptionHandling
                 errorMessage = exception.Message;
             }
 
+            if (exception is AuthenticationException)
+            {
+                responseStatusCode = HttpStatusCode.Unauthorized;
+                errorMessage = "User name or password are invalid";
+            }
 
             if (string.IsNullOrWhiteSpace(context.Response.ContentType))
             {

@@ -12,7 +12,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
     public class GetMethodTests : AllTestsSetup
     {
 
-        private IList<Product> existingProducts;
+        private readonly IList<Product> existingProducts;
         protected IServiceProvider ServiceProvider;
 
         public GetMethodTests()
@@ -25,7 +25,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         [OneTimeSetUp]
         public void Setup()
         {
-            // Create test data here
+            // Create test data here with data framework
         }
 
         [Test]

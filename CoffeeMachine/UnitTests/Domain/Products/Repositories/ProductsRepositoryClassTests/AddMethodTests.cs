@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cm.Domain.Common.Dal;
 using Cm.Domain.Products;
 using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -49,14 +52,14 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var usersRepository = ServiceProvider.GetService<IUsersRepository>();
 
             var allUsers = await usersRepository.GetAllAsync();
-            var firstUser = allUsers.First();
+            var firstUser = allUsers.First(x => x.Role.Name == UserRoles.Seller);
 
-            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
+            Product product = new Product(TestProductName, firstUser, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
 
             Assert.IsTrue(allProductsAfterSave.Any(x => x.Name == product.Name
-                                                        && x.UserId == firstUser.Id
+                                                        && x.User.Id == firstUser.Id
                                                         && x.Id > 0));
         }
 
@@ -66,13 +69,12 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
             var repository = ServiceProvider.GetService<IProductsRepository>();
             var usersRepository = ServiceProvider.GetService<IUsersRepository>();
+            
+            List<User> allUsers = (await usersRepository.GetAllAsync()).ToList();
+            var firstUser = allUsers.First(x => x.Role.Name == UserRoles.Seller);
+            
 
-            var allUsers = (await usersRepository.GetAllAsync()).ToList();
-            var firstUser = allUsers.First();
-
-
-
-            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
+            Product product = new Product(TestProductName, firstUser, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
 
@@ -81,13 +83,13 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var secondUser = allUsers.Last();
             justCreateProduct.Name = "UpdatedTest";
             justCreateProduct.User = secondUser;
-            justCreateProduct.UserId = secondUser.Id;
+            justCreateProduct.User.Id = secondUser.Id;
 
             await repository.AddAsync(justCreateProduct);
 
             allProductsAfterSave = await repository.GetAllAsync();
             Assert.IsTrue(allProductsAfterSave.Any(x => x.Name == justCreateProduct.Name
-                                                        && x.UserId == secondUser.Id
+                                                        && x.User.Id == secondUser.Id
                                                         && x.Id == justCreateProduct.Id));
 
         }

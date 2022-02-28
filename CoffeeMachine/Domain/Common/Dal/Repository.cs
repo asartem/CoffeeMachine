@@ -8,14 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cm.Domain.Common.Dal
 {
-    public abstract class Repository<T> : IRepository<T> where T : class, IEntity, new()
+    public class Repository<T> : IRepository<T> where T : class, IEntity, new()
     {
         public readonly ApplicationContext Context;
 
-        protected Repository(ApplicationContext context)
+        public Repository(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-
         }
 
         #region SyncOperations
@@ -29,6 +28,7 @@ namespace Cm.Domain.Common.Dal
             T result = Context.Set<T>().Find(id);
             return result;
         }
+
 
         public virtual IEnumerable<T> GetAll()
         {

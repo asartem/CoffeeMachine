@@ -1,5 +1,6 @@
 ﻿using Cm.Domain.Products;
 using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.EntityFrameworkCore;
 
 namespace Cm.Domain.Common.Dal
@@ -9,12 +10,6 @@ namespace Cm.Domain.Common.Dal
         public ApplicationContext(DbContextOptions options)
             : base(options)
         {
-            Database.EnsureCreated();
-        }
-        
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,11 +21,10 @@ namespace Cm.Domain.Common.Dal
 
         private void ConfigureProducts(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>()
-                .ToTable("Products");
+            modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().HasKey(product => product.Id);
             modelBuilder.Entity<Product>().Property(product => product.Name).IsRequired();
-            modelBuilder.Entity<Product>().HasOne(product => product.User);
+            modelBuilder.Entity<Product>().HasOne(product => product.User).WithMany().IsRequired();
 
         }
 
@@ -39,9 +33,6 @@ namespace Cm.Domain.Common.Dal
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(user => user.Id);
             modelBuilder.Entity<User>().Property(user => user.Name).IsRequired();
-            
-
-            modelBuilder.Entity<User>().HasOne(user => user.Role);
 
 
             modelBuilder.Entity<UserRole>().ToTable("UserRoles");
