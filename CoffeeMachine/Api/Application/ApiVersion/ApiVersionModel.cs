@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Api.Application.ApiVersion
+namespace Cm.Api.Application.ApiVersion
 {
     /// <summary>
     /// Model of the api service version

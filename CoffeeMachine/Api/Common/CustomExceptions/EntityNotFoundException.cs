@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Api.Common.CustomExceptions
+namespace Cm.Api.Common.CustomExceptions
 {
     /// <summary>
     /// Exception in case when entity was not found

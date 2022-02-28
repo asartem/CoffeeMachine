@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Domain.Common.Models;
+using Cm.Domain.Common.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Common.Dal
+namespace Cm.Domain.Common.Dal
 {
     public abstract class Repository<T> : IRepository<T> where T : class, IEntity, new()
     {

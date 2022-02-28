@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Products;
-using Domain.Users;
+using Cm.Domain.Products;
+using Cm.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
+namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 {
     [TestFixture]
     public class AddMethodTests : AllTestsSetup
@@ -51,7 +51,7 @@ namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var allUsers = await usersRepository.GetAllAsync();
             var firstUser = allUsers.First();
 
-            Product product = new Product(TestProductName, firstUser.Id);
+            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
 
@@ -72,7 +72,7 @@ namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
 
 
-            Product product = new Product(TestProductName, firstUser.Id);
+            Product product = new Product(TestProductName, firstUser.Id, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
 

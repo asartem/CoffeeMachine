@@ -1,8 +1,8 @@
-﻿using Domain.Products;
-using Domain.Users;
+﻿using Cm.Domain.Products;
+using Cm.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Common.Dal
+namespace Cm.Domain.Common.Dal
 {
     public class ApplicationContext : DbContext
     {

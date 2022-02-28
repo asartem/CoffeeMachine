@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeeMachine", "CoffeeMachine\CoffeeMachine.csproj", "{F3A19C29-D86E-481A-B28C-BF70BF3D4059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cm.HostService", "CoffeeMachine\Cm.HostService.csproj", "{F3A19C29-D86E-481A-B28C-BF70BF3D4059}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{011916FB-245F-470A-89EE-29A93E9F186B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cm.Api", "Api\Cm.Api.csproj", "{011916FB-245F-470A-89EE-29A93E9F186B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "UnitTests\Tests.csproj", "{AB7F2797-68B8-42F0-BAB3-BA0DFAFBA83F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cm.Tests", "UnitTests\Cm.Tests.csproj", "{AB7F2797-68B8-42F0-BAB3-BA0DFAFBA83F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B33D1EBB-032C-46BA-9E07-29399479C7D9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0F614E4C-A5E2-4613-8FE3-4F4C0B47B5DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{118A8019-BEEC-49B5-9593-2518434E14E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cm.Domain", "Domain\Cm.Domain.csproj", "{118A8019-BEEC-49B5-9593-2518434E14E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Products;
+using Cm.Domain.Products;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
+namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 {
     [TestFixture]
     public class GetMethodTests : AllTestsSetup

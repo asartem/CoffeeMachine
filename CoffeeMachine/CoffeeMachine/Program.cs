@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Reflection;
+using Cm.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,14 +10,10 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System;
-using System.Linq;
-using System.Reflection;
-using Api;
 using ILogger = NLog.ILogger;
 
 
-namespace CoffeeMachine
+namespace Cm.HostService
 {
 
     /// <summary>

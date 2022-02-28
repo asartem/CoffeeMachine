@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Api.Common
+namespace Cm.Api.Common
 {
     /// <summary>
     ///     Base class for all controllers

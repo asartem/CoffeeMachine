@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain.Common.Dal;
-using Domain.Users;
+using Cm.Domain.Common.Dal;
+using Cm.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
-namespace Domain.Products
+namespace Cm.Domain.Products
 {
 
     public interface IProductsRepository : IRepository<Product>

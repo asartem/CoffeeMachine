@@ -1,7 +1,7 @@
 ﻿using System;
-using Domain.Products;
+using Cm.Domain.Products;
 
-namespace Api.Products.Models
+namespace Cm.Api.Api.Products.Models
 {
     /// <summary>
     /// Creates product for coffee machine
@@ -14,9 +14,9 @@ namespace Api.Products.Models
         /// <param name="userId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public  Product ToEntity(int userId)
+        public Product ToEntity(int userId)
         {
-            Product result = new Product(Name, userId);
+            Product result = new Product(Name, userId, Price, Quantity);
             return result;
         }
 

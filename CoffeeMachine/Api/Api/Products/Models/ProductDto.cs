@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.Products;
+using Cm.Domain.Products;
 using Newtonsoft.Json;
 
-namespace Api.Products.Models
+namespace Cm.Api.Api.Products.Models
 {
     /// <summary>
     /// Product for coffee machine
@@ -13,7 +13,7 @@ namespace Api.Products.Models
         /// <summary>
         /// Id of the product
         /// </summary>
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Id of the owner
@@ -43,6 +43,8 @@ namespace Api.Products.Models
             Id = entity.Id;
             Name = entity.Name;
             UserId = entity.UserId;
+            Price = entity.Price;
+            Quantity = entity.Qty;
         }
         
 

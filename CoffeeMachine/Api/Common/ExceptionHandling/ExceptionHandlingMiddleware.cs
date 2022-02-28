@@ -3,11 +3,11 @@ using System.Data;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Api.Common.CustomExceptions;
+using Cm.Api.Common.CustomExceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Common.ExceptionHandling
+namespace Cm.Api.Common.ExceptionHandling
 {
     /// <summary>
     /// Middleware to handle exceptions in a single place

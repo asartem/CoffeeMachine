@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Api.Common;
-using Api.Common.CustomExceptions;
-using Api.Products.Models;
-using AutoMapper;
-using Domain.Products;
-using Microsoft.AspNetCore.Authorization;
+using Cm.Api.Api.Products.Models;
+using Cm.Api.Common;
+using Cm.Api.Common.CustomExceptions;
+using Cm.Domain.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Products
+namespace Cm.Api.Api.Products
 {
     /// <summary>
     /// Returns shipment drafts
@@ -26,24 +24,16 @@ namespace Api.Products
         /// Products repository
         /// </summary>
         public IProductsRepository ProductsRepository { get; }
-
-        /// <summary>
-        /// Mapper for dto objects
-        /// </summary>
-        public IMapper Mapper { get; protected set; }
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="productsRepository"></param>
-        /// <param name="mapper"></param>
         /// <param name="logger"></param>
         public ProductsController(IProductsRepository productsRepository,
-            IMapper mapper,
-                                        ILogger<ProductsController> logger) : base(logger)
+                                  ILogger<ProductsController> logger) : base(logger)
         {
             ProductsRepository = productsRepository ?? throw new ArgumentNullException(nameof(productsRepository));
-            Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
         }
 

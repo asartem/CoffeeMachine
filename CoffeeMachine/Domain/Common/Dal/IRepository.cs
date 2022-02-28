@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq.Expressions;
-using Domain.Common.Models;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Cm.Domain.Common.Models;
 
-namespace Domain.Common.Dal
+namespace Cm.Domain.Common.Dal
 {
     public interface IRepository<T> where T : IEntity
     {

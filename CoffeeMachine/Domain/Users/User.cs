@@ -1,7 +1,7 @@
 ﻿using System;
-using Domain.Common.Models;
+using Cm.Domain.Common.Models;
 
-namespace Domain.Users
+namespace Cm.Domain.Users
 {
     public class User : IEntity
     {

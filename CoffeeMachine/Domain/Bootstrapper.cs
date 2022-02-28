@@ -1,11 +1,11 @@
-﻿using Domain.Common.Dal;
-using Domain.Products;
-using Domain.Users;
+﻿using Cm.Domain.Common.Dal;
+using Cm.Domain.Products;
+using Cm.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Domain
+namespace Cm.Domain
 {
     public static class Bootstrapper
     {

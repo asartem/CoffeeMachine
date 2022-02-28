@@ -1,6 +1,6 @@
-﻿using Domain.Common.Dal;
+﻿using Cm.Domain.Common.Dal;
 
-namespace Domain.Users
+namespace Cm.Domain.Users
 {
 
     public interface IUsersRepository: IRepository<User>

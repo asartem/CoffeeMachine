@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using Cm.Api.Application.ApiVersion;
+using Cm.Api.Common.ExceptionHandling;
+using Cm.Domain;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using Api.Application.ApiVersion;
-using Api.Common.ExceptionHandling;
-using Domain;
 using Newtonsoft.Json;
 
-namespace Api
+namespace Cm.Api
 {
 
     /// <summary>

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using Domain;
+using Cm.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using NUnit.Framework;
 
-namespace Tests
+namespace Cm.Tests
 {
     [SetUpFixture]
     public class AllTestsSetup

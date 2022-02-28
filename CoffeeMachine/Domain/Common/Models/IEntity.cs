@@ -1,4 +1,4 @@
-﻿namespace Domain.Common.Models
+﻿namespace Cm.Domain.Common.Models
 {
     public interface IEntity
     {

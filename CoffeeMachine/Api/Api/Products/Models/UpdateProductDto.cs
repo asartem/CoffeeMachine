@@ -1,7 +1,7 @@
 ﻿using System;
-using Domain.Products;
+using Cm.Domain.Products;
 
-namespace Api.Products.Models
+namespace Cm.Api.Api.Products.Models
 {
     /// <summary>
     /// updates product for coffee machine
@@ -9,19 +9,31 @@ namespace Api.Products.Models
     public class UpdateProductDto : ProductDtoBase
     {
         /// <summary>
+        /// Price of the product
+        /// </summary>
+        public new decimal? Price { get; set; }
+        
+        /// <summary>
+        /// Quantity
+        /// </summary>
+        public new int? Quantity { get; set; }
+
+        /// <summary>
         /// Converts dto to entity
         /// </summary>
         /// <param name="existingProduct"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public  Product Update(Product existingProduct)
+        public Product Update(Product existingProduct)
         {
             if (existingProduct == null)
             {
                 throw new ArgumentNullException(nameof(existingProduct));
             }
 
-            existingProduct.Name = Name;
+            existingProduct.Name = Name ?? existingProduct.Name;
+            existingProduct.Price = Price ?? existingProduct.Price;
+            existingProduct.Qty = Quantity ?? existingProduct.Qty;
             return existingProduct;
         }
     }
