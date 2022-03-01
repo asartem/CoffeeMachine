@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
-using Cm.Api.Api.Authentication;
 using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Users.Models;
 using Cm.Api.Common;
@@ -91,16 +89,16 @@ namespace Cm.Api.Api.Users
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-        public async Task<ActionResult> CreateBuyerAsync([FromBody] CreateUserDto model)
+        public async Task<ActionResult<UserDto>> CreateBuyerAsync([FromBody] CreateUserDto model)
         {
             Logger.LogDebug($"Create Buyer {model?.UserName}.");
 
-            
+
 
             User user = await CreateUserAsync(model, UserRoles.Buyer);
             UserDto userDto = new UserDto(user);
 
-            return Ok(userDto);
+            return userDto;
         }
 
 
@@ -118,7 +116,7 @@ namespace Cm.Api.Api.Users
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
-        public async Task<ActionResult> CreateSellerAsync([FromBody] CreateUserDto model)
+        public async Task<ActionResult<UserDto>> CreateSellerAsync([FromBody] CreateUserDto model)
         {
             Logger.LogDebug($"Create Seller {model?.UserName}.");
 
@@ -133,7 +131,7 @@ namespace Cm.Api.Api.Users
             User user = await CreateUserAsync(model, UserRoles.Seller);
             UserDto userDto = new UserDto(user);
 
-            return Ok(userDto);
+            return userDto;
         }
 
 
@@ -149,7 +147,7 @@ namespace Cm.Api.Api.Users
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-        public async Task<ActionResult> UpdateUserAsync([FromBody] UpdateUserDto model)
+        public async Task<ActionResult<UserDto>> UpdateUserAsync([FromBody] UpdateUserDto model)
         {
             int id = HttpContext.User.Identity.Id();
 
@@ -174,7 +172,7 @@ namespace Cm.Api.Api.Users
             var user = new UserDto(updatedUser);
 
             Logger.LogDebug($"User {updatedUser.Id} was successfully update.");
-            return Ok(user);
+            return user;
         }
 
 

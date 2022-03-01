@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Cm.Api.Api.Authentication;
-using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Products.Models;
 using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
@@ -12,7 +10,6 @@ using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -124,10 +121,12 @@ namespace Cm.Api.Api.Products
         /// <returns></returns>
         /// <response code="201">If product was created</response>
         /// <response code="400">If request body is null or invalid</response>   
+        /// <response code="409">If product already exists</response>   
         [HttpPost, Route("")]
         [Authorize(Roles = UserRoles.Seller)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
         public async Task<ActionResult> CreateProductAsync([FromBody] CreateProductDto model)
         {
@@ -140,14 +139,17 @@ namespace Cm.Api.Api.Products
                 return BadRequest(errorMsg);
             }
 
-            int userId = User.Identity.Id();
-            User user = await UsersRepository.GetAsync(userId);
-            Product product = model.ToEntity(user);
+            Product product = model.ToEntity();
+            var hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name)).Any();
+            if (hasTheSameProduct)
+            {
+                return Conflict("Such product already exists");
+            }
 
             await ProductsRepository.AddAsync(product);
-
+            var result = new ProductDto(product);
             Logger.LogDebug($"Product {product.Name} was successfully created.");
-            return Ok(product);
+            return Ok(result);
         }
 
 
@@ -184,9 +186,9 @@ namespace Cm.Api.Api.Products
             Product updatedProduct = model.Update(existingProduct);
 
             await ProductsRepository.AddAsync(updatedProduct);
-
+            var result = new ProductDto(updatedProduct);
             Logger.LogDebug($"Product {updatedProduct.Id} was successfully update.");
-            return Ok();
+            return Ok(result);
         }
 
 

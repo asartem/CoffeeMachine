@@ -1,8 +1,6 @@
-﻿using System;
-using Cm.Domain.Common.Dal;
+﻿using Cm.Domain.Common.Dal;
 using Cm.Domain.Products;
 using Cm.Domain.Users;
-using Cm.Domain.Users.Roles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

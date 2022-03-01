@@ -37,9 +37,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             var result = await repository.GetAsync(expectedProduct.Id);
             Assert.AreEqual(expectedProduct.Id, result.Id);
             Assert.AreEqual(expectedProduct.Name, result.Name);
-            Assert.AreEqual(expectedProduct.User, result.User);
             Assert.IsNotNull(result.Name);
-            Assert.IsNotNull(result.User);
 
         }
 

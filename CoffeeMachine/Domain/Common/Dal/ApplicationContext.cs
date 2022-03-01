@@ -24,7 +24,6 @@ namespace Cm.Domain.Common.Dal
             modelBuilder.Entity<Product>().ToTable("Products");
             modelBuilder.Entity<Product>().HasKey(product => product.Id);
             modelBuilder.Entity<Product>().Property(product => product.Name).IsRequired();
-            modelBuilder.Entity<Product>().HasOne(product => product.User).WithMany().IsRequired();
 
         }
 

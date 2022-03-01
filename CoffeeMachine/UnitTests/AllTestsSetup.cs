@@ -39,7 +39,6 @@ namespace Cm.Tests
                 var configuration = serviceProvider.GetService<IConfiguration>();
                 ServiceCollection.RegisterDalServices(configuration);
                 serviceProvider.Dispose();
-                serviceProvider = null;
             }
             catch (Exception e)
             {
@@ -47,20 +46,8 @@ namespace Cm.Tests
                 throw;
             }
            
-            //SetupPreDefinedTestData();
-
         }
-
-        private static void SetupPreDefinedTestData()
-        {
-            var serviceProvider = ServiceCollection.BuildServiceProvider();
-            var configuration = serviceProvider.GetService<IConfiguration>();
-            // var connectionString = configuration[Domain.TestData.PathToContentDbSetting];
-
-            //var connectionStringTestDataFactory = serviceProvider.GetService<ConnectionStringTestDataFactory>();
-            
-            serviceProvider.Dispose();
-        }
+        
 
         private ServiceCollection GetServiceCollectionWithCommonSettings()
         {

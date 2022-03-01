@@ -4,9 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Cm.Domain.Common.Dal;
-using Cm.Domain.Users.Roles;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Cm.Domain.Users
 {
@@ -52,7 +50,7 @@ namespace Cm.Domain.Users
         /// Loads all users
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<User>> GetAllAsync()
+        public override async Task<IEnumerable<User>> GetAllAsync()
         {
             var result = await Context.Set<User>()
                 .Include(x => x.Role)
