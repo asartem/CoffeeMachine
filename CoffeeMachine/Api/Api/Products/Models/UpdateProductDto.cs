@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Products;
+using static System.Int32;
 
 namespace Cm.Api.Api.Products.Models
 {
@@ -11,11 +13,13 @@ namespace Cm.Api.Api.Products.Models
         /// <summary>
         /// Price of the product
         /// </summary>
+        [PriceValidation]
         public new int? Price { get; set; }
         
         /// <summary>
         /// Quantity
         /// </summary>
+        [Range(0, MaxValue, ErrorMessage = "Quantity should be more then zero")]
         public new int? Quantity { get; set; }
 
         /// <summary>

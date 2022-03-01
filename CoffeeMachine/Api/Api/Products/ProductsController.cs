@@ -139,6 +139,11 @@ namespace Cm.Api.Api.Products
                 return BadRequest(errorMsg);
             }
 
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelValidationException(ModelState.Values);
+            }
+
             Product product = model.ToEntity();
             var hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name)).Any();
             if (hasTheSameProduct)
@@ -175,6 +180,11 @@ namespace Cm.Api.Api.Products
                 string errorMsg = "Product entity was not provided.";
                 Logger.LogError(errorMsg);
                 return BadRequest(errorMsg);
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelValidationException(ModelState.Values);
             }
 
             Product existingProduct = await ProductsRepository.GetAsync(id);

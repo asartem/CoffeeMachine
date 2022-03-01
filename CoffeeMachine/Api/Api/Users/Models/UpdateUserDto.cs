@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Users;
 
 namespace Cm.Api.Api.Users.Models
@@ -12,7 +13,7 @@ namespace Cm.Api.Api.Users.Models
         /// user password
         /// </summary>
         public string Password { get; set; }
-        
+
         /// <summary>
         /// Converts dto to entity
         /// </summary>
@@ -25,11 +26,16 @@ namespace Cm.Api.Api.Users.Models
             {
                 throw new ArgumentNullException(nameof(existingUser));
             }
-           
-            existingUser.Password = string.IsNullOrWhiteSpace(Password) 
-                                    ? existingUser.Name 
+
+            existingUser.Password = string.IsNullOrWhiteSpace(Password)
+                                    ? existingUser.Name
                                     : Password;
-            existingUser.Deposit = Deposit ?? existingUser.Deposit;
+
+            if (Deposit != null)
+            {
+                existingUser.Deposit += Deposit.Value;
+            }
+
             return existingUser;
         }
     }

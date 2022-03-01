@@ -93,8 +93,11 @@ namespace Cm.Api.Api.Users
         {
             Logger.LogDebug($"Create Buyer {model?.UserName}.");
 
-
-
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelValidationException(ModelState.Values);
+            }
+            
             User user = await CreateUserAsync(model, UserRoles.Buyer);
             UserDto userDto = new UserDto(user);
 
@@ -119,6 +122,11 @@ namespace Cm.Api.Api.Users
         public async Task<ActionResult<UserDto>> CreateSellerAsync([FromBody] CreateUserDto model)
         {
             Logger.LogDebug($"Create Seller {model?.UserName}.");
+
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelValidationException(ModelState.Values);
+            }
 
             bool isSellerExisting =
                 (await UsersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).Any();
@@ -158,6 +166,11 @@ namespace Cm.Api.Api.Users
                 string errorMsg = "User entity was not provided.";
                 Logger.LogError(errorMsg);
                 return BadRequest(errorMsg);
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                throw new ModelValidationException(ModelState.Values);
             }
 
             User existingUser = await UsersRepository.GetAsync(id);

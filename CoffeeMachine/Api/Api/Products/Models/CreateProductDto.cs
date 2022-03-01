@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Products;
 
 namespace Cm.Api.Api.Products.Models
@@ -8,6 +9,12 @@ namespace Cm.Api.Api.Products.Models
     /// </summary>
     public class CreateProductDto : ProductDtoBase
     {
+        /// <summary>
+        /// Name of the product
+        /// </summary>
+        [Required(ErrorMessage = "Name of the product is required")]
+        public new string Name { get; set; }
+
         /// <summary>
         /// Converts dto to entity
         /// </summary>

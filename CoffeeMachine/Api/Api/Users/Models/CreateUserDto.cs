@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;
 
@@ -12,16 +13,20 @@ namespace Cm.Api.Api.Users.Models
         /// <summary>
         /// Name of the user
         /// </summary>
+        [Required(ErrorMessage = "User name is required")]
         public string UserName { get; set; }
 
         /// <summary>
         /// Name of the user
         /// </summary>
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
         /// <summary>
         /// Name of the user
         /// </summary>
+        [Required(ErrorMessage = "Deposit is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Deposit should be more then 0")]
         public new int Deposit { get; set; }
 
         /// <summary>

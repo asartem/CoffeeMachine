@@ -66,12 +66,18 @@ namespace Cm.Api.Common.ExceptionHandling
             }
 
             string errorMessage = exception.Message;
-
             
+
             if (exception is ApplicationException)
             {
                 responseStatusCode = HttpStatusCode.UnprocessableEntity;
                 errorMessage = $"Invalid entity. {errorMessage}";
+            }
+
+            if (exception is ModelValidationException)
+            {
+                responseStatusCode = HttpStatusCode.BadRequest;
+                errorMessage = $"Entity is not valid. {errorMessage}";
             }
 
             if (exception is EntityNotFoundException)
