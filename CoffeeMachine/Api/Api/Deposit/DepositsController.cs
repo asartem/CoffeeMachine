@@ -7,6 +7,7 @@ using Cm.Api.Common.CustomExceptions;
 using Cm.Domain.Deposits;
 using Cm.Domain.Deposits.Services;
 using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -136,7 +137,8 @@ namespace Cm.Api.Api.Deposit
         /// <returns></returns>
         /// <response code="200">If user's deposit was reset to 0</response>
         /// <response code="404">If user was not found</response>   
-        [HttpDelete, Route("")]
+        [HttpPut, Route("reset")]
+        [Authorize(Roles = UserRoles.Buyer)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]

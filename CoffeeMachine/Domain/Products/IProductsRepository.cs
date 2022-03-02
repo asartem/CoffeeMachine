@@ -28,9 +28,8 @@ namespace Cm.Domain.Products
          /// Find product by expression for specific user
          /// </summary>
          /// <param name="expression"></param>
-         /// <param name="userId"></param>
          /// <returns></returns>
-         Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression, int userId);
+         Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression);
 
          /// <summary>
          /// Adds product
@@ -38,6 +37,12 @@ namespace Cm.Domain.Products
          /// <param name="entity"></param>
          /// <returns></returns>
          Task AddAsync(Product entity);
+
+         /// <summary>
+         /// Adds product to context without save
+         /// </summary>
+         /// <param name="entity"></param>
+         void AddToContext(Product entity);
 
          /// <summary>
          /// Removes product

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cm.Api.Api.Authentication.Models;
+using Cm.Api.Api.Buy;
 using Cm.Api.Api.Products.Models;
 using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
@@ -22,7 +23,7 @@ namespace Cm.Api.Api.Products
     [Route("/[controller]")]
     [Authorize]
     [ApiController]
-    public class ProductsController : ApiControllerBase
+    public class ProductController : ApiControllerBase
     {
         /// <summary>
         /// Products repository
@@ -40,9 +41,9 @@ namespace Cm.Api.Api.Products
         /// <param name="productsRepository"></param>
         /// <param name="usersRepository"></param>
         /// <param name="logger"></param>
-        public ProductsController(IProductsRepository productsRepository,
+        public ProductController(IProductsRepository productsRepository,
                                     IUsersRepository usersRepository,
-                                    ILogger<ProductsController> logger) : base(logger)
+                                    ILogger<BuysController> logger) : base(logger)
         {
             ProductsRepository = productsRepository ?? throw new ArgumentNullException(nameof(productsRepository));
             UsersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
@@ -150,7 +151,10 @@ namespace Cm.Api.Api.Products
             User seller = await UsersRepository.GetAsync(userId);
             Product product = model.ToEntity(seller);
 
-            bool hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name, userId)).Any();
+            bool hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name
+                                                                              && x.Seller.Id == userId))
+                                        .Any();
+
             if (hasTheSameProduct)
             {
                 return Conflict("Such product already exists");

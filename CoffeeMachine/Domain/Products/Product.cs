@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cm.Domain.Common.Models;
 using Cm.Domain.Users;
 
@@ -53,6 +54,24 @@ namespace Cm.Domain.Products
         {
             if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
             Id = id;
+        }
+
+        /// <summary>
+        /// Reduce qty for product
+        /// </summary>
+        /// <param name="qty"></param>
+        public void ReduceQty(int qty)
+        {
+            if (qty < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(qty));
+            }
+            if (Qty < qty)
+            {
+                throw new ArgumentOutOfRangeException("Product qty is less then purchased qty");
+            }
+
+            Qty -= qty;
         }
     }
 }

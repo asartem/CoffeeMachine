@@ -16,62 +16,7 @@ namespace Cm.Domain.Common.Dal
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
-
-        #region SyncOperations
-        public virtual T Get(int id)
-        {
-            if (id < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id));
-            }
-
-            T result = Context.Set<T>().Find(id);
-            return result;
-        }
-
-
-        public virtual IEnumerable<T> GetAll()
-        {
-            var result = Context.Set<T>().ToList();
-            return result;
-        }
-
-        public virtual IEnumerable<T> Find(Expression<Func<T, bool>> expression)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            IQueryable<T> result = Context.Set<T>().Where(expression);
-            return result;
-        }
-
-        public virtual void Add(T entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            Context.Set<T>().Add(entity);
-        }
-
-        public virtual void Remove(T entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-
-            if (entity.Id < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(entity.Id));
-            }
-
-            Context.Set<T>().Remove(entity);
-            Context.SaveChanges();
-        }
-        #endregion
+        
 
         public virtual async Task<T> GetAsync(int id)
         {
@@ -113,7 +58,8 @@ namespace Cm.Domain.Common.Dal
                 ContextManagementService.DetachLocal(Context, entity, entity.Id);
                 Context.Set<T>().Update(entity);
             }
-            await Context.SaveChangesAsync();
+
+            await SaveContextAsync();
         }
 
         public async Task RemoveAsync(T entity)
@@ -129,21 +75,28 @@ namespace Cm.Domain.Common.Dal
 
             ContextManagementService.DetachLocal(Context, entity, entity.Id);
             Context.Set<T>().Remove(entity);
+            await SaveContextAsync();
+        }
+
+        /// <summary>
+        /// Adds to context without save
+        /// </summary>
+        /// <param name="entity"></param>
+        public void AddToContext(T entity)
+        {
+            Context.Set<T>().Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
+        }
+
+        /// <summary>
+        /// Saves context
+        /// </summary>
+        /// <returns></returns>
+        public async Task SaveContextAsync()
+        {
             await Context.SaveChangesAsync();
         }
 
-
-        protected void DetachLocal(T t, int entryId)
-        {
-            var local = Context.Set<T>()
-                .Local
-                .FirstOrDefault(entry => entry.Id == entryId);
-
-            if (local != null)
-            {
-                Context.Entry(local).State = EntityState.Detached;
-            }
-            Context.Entry(t).State = EntityState.Modified;
-        }
+        
     }
 }

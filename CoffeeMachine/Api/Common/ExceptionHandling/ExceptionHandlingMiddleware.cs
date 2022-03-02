@@ -80,7 +80,8 @@ namespace Cm.Api.Common.ExceptionHandling
                 errorMessage = $"Entity is not valid. {errorMessage}";
             }
 
-            if (exception is EntityNotFoundException)
+            if (exception is EntityNotFoundException || 
+                exception is Domain.Purchases.Exceptions.EntityNotFoundException)
             {
                 responseStatusCode = HttpStatusCode.NotFound;
                 errorMessage = exception.Message;

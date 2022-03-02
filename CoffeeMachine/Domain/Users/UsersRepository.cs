@@ -11,13 +11,6 @@ namespace Cm.Domain.Users
     /// <summary>
     /// Users repository
     /// </summary>
-    public interface IUsersRepository : IRepository<User>
-    {
-    }
-
-    /// <summary>
-    /// Users repository
-    /// </summary>
     public class UsersRepository : Repository<User>, IUsersRepository
     {
         public UsersRepository(ApplicationContext context) : base(context)

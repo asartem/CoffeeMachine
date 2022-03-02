@@ -13,7 +13,14 @@ namespace Cm.Domain.Products
     /// </summary>
     public class ProductsRepository : IProductsRepository
     {
+        /// <summary>
+        /// Generic implementation of repository
+        /// </summary>
         protected readonly IRepository<Product> GenericProductService;
+
+        /// <summary>
+        /// Context
+        /// </summary>
         protected readonly ApplicationContext Context;
 
         /// <summary>
@@ -81,6 +88,24 @@ namespace Cm.Domain.Products
         }
 
         /// <summary>
+        /// Find product by expression for all sellers
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public virtual async Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression)
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
+            IQueryable<Product> queryable = Context.Set<Product>()
+                .Where(expression);
+
+            return await queryable.ToListAsync();
+        }
+
+        /// <summary>
         /// Adds product
         /// </summary>
         /// <param name="entity"></param>
@@ -89,7 +114,18 @@ namespace Cm.Domain.Products
         {
             await GenericProductService.AddAsync(entity);
         }
-
+        
+        /// <summary>
+        /// Adds product
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual void AddToContext(Product entity)
+        {
+            GenericProductService.AddToContext(entity);
+        }
+        
+        
         /// <summary>
         /// Removes product
         /// </summary>
