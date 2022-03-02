@@ -7,7 +7,7 @@ namespace Cm.Api.Api.Users.Models
     /// <summary>
     /// Product for coffee machine
     /// </summary>
-    public class UserDto : UserDtoBase
+    public class UserDto
     {
         /// <summary>
         /// Id of the product
@@ -18,6 +18,16 @@ namespace Cm.Api.Api.Users.Models
         /// Name of the user
         /// </summary>
         public string UserName { get; set; }
+
+        /// <summary>
+        /// Role
+        /// </summary>
+        public string Role { get; set; }
+
+        /// <summary>
+        /// Deposit of the user
+        /// </summary>
+        public int Deposit { get; set; }
 
         /// <summary>
         /// Creates instance of the dto
@@ -42,6 +52,7 @@ namespace Cm.Api.Api.Users.Models
             UserName = entity.Name;
             Id = entity.Id;
             Deposit = entity.Deposit;
+            Role = entity.Role?.Name;
         }
     }
 }

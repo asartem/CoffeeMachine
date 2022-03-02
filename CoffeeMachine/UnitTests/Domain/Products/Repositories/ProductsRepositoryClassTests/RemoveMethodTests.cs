@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Cm.Domain.Products;
+using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -14,6 +16,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
         const string TestProductName = "TestProduct";
         protected IServiceProvider ServiceProvider;
+        protected User seller;
 
         public RemoveMethodTests()
         {
@@ -21,21 +24,24 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         }
 
         [OneTimeSetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            var userRepository = ServiceProvider.GetService<IUsersRepository>();
+            seller = (await userRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
+
             // Create test data here
         }
 
         [TearDown]
-        public void Cleanup()
+        public async Task Cleanup()
         {
             var repository = ServiceProvider.GetService<IProductsRepository>();
-            var allProductsAfterSave = repository.GetAll();
+            var allProductsAfterSave = (await repository.GetAllAsync());
             foreach (var product in allProductsAfterSave)
             {
                 if (product.Id > 5)
                 {
-                    repository.Remove(product);
+                    await repository.RemoveAsync(product);
                 }
             }
         }
@@ -46,8 +52,8 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         {
 
             var repository = ServiceProvider.GetService<IProductsRepository>();
-            
-            Product product = new Product(TestProductName, 5, 10);
+
+            Product product = new Product(TestProductName, seller, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
             var createdItem = allProductsAfterSave.FirstOrDefault(x => x.Name == product.Name);
@@ -59,7 +65,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
             Assert.IsNotNull(createdItem);
             Assert.IsNull(removedItem);
-            
+
 
         }
 
@@ -68,12 +74,12 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         {
 
             var repository = ServiceProvider.GetService<IProductsRepository>();
-            
-            Product product = new Product(TestProductName, 5, 10);
+
+            Product product = new Product(TestProductName, seller, 5, 10);
             await repository.AddAsync(product);
             var allProductsAfterSave = await repository.GetAllAsync();
             var createdItem = allProductsAfterSave.First(x => x.Name == product.Name);
-            
+
             await repository.RemoveAsync(createdItem);
 
             allProductsAfterSave = await repository.GetAllAsync();
@@ -81,7 +87,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
             Assert.IsNotNull(createdItem);
             Assert.IsNull(removedItem);
-            
+
 
         }
 

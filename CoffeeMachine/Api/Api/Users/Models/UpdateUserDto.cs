@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Users;
 
 namespace Cm.Api.Api.Users.Models
@@ -7,13 +6,13 @@ namespace Cm.Api.Api.Users.Models
     /// <summary>
     /// updates product for coffee machine
     /// </summary>
-    public class UpdateUserDto : UserDtoBase
-    {
+    public class UpdateUserDto {
+
         /// <summary>
         /// user password
         /// </summary>
         public string Password { get; set; }
-
+        
         /// <summary>
         /// Converts dto to entity
         /// </summary>
@@ -31,11 +30,7 @@ namespace Cm.Api.Api.Users.Models
                                     ? existingUser.Name
                                     : Password;
 
-            if (Deposit != null)
-            {
-                existingUser.Deposit += Deposit.Value;
-            }
-
+          
             return existingUser;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Cm.Domain.Products;
+using Cm.Domain.Users;
 
 namespace Cm.Api.Api.Products.Models
 {
@@ -18,11 +19,12 @@ namespace Cm.Api.Api.Products.Models
         /// <summary>
         /// Converts dto to entity
         /// </summary>
+        /// <param name="seller"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public Product ToEntity()
+        public Product ToEntity(User seller)
         {
-            Product result = new Product(Name, Price, Quantity);
+            Product result = new Product(Name, seller, Price, Quantity);
             return result;
         }
 

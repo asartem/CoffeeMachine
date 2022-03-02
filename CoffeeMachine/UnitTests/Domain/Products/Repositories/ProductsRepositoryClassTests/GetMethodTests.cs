@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cm.Domain.Products;
+using Cm.Domain.Users;
+using Cm.Domain.Users.Roles;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -12,19 +14,25 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
     public class GetMethodTests : AllTestsSetup
     {
 
-        private readonly IList<Product> existingProducts;
+        private IList<Product> existingProducts;
         protected IServiceProvider ServiceProvider;
+        private User seller;
 
         public GetMethodTests()
         {
             ServiceProvider = ServiceCollection.BuildServiceProvider();
-            var repository = ServiceProvider.GetService<IProductsRepository>();
-            existingProducts = repository.GetAll().ToList();
+
         }
 
         [OneTimeSetUp]
-        public void Setup()
+        public async Task Setup()
         {
+            var repository = ServiceProvider.GetService<IProductsRepository>();
+            existingProducts = (await repository.GetAllAsync()).ToList();
+
+            var userRepository = ServiceProvider.GetService<IUsersRepository>();
+            seller = (await userRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
+
             // Create test data here with data framework
         }
 
@@ -33,8 +41,10 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         {
 
             var repository = ServiceProvider.GetService<IProductsRepository>();
+
             var expectedProduct = existingProducts.First();
-            var result = await repository.GetAsync(expectedProduct.Id);
+
+            var result = await repository.GetAsync(expectedProduct.Id, seller.Id);
             Assert.AreEqual(expectedProduct.Id, result.Id);
             Assert.AreEqual(expectedProduct.Name, result.Name);
             Assert.IsNotNull(result.Name);
@@ -50,6 +60,6 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
             Assert.AreEqual(existingProducts.Count, result.Count());
 
         }
-        
+
     }
 }

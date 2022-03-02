@@ -8,7 +8,7 @@ namespace Cm.Api.Api.Users.Models
     /// <summary>
     /// Creates product for coffee machine
     /// </summary>
-    public class CreateUserDto : UserDtoBase
+    public class CreateUserDto
     {
         /// <summary>
         /// Name of the user
@@ -27,7 +27,7 @@ namespace Cm.Api.Api.Users.Models
         /// </summary>
         [Required(ErrorMessage = "Deposit is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Deposit should be more then 0")]
-        public new int Deposit { get; set; }
+        public int Deposit { get; set; }
 
         /// <summary>
         /// Converts dto to entity

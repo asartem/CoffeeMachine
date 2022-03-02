@@ -110,7 +110,7 @@ namespace Cm.Domain.Common.Dal
             }
             else
             {
-                DetachLocal(entity, entity.Id);
+                ContextManagementService.DetachLocal(Context, entity, entity.Id);
                 Context.Set<T>().Update(entity);
             }
             await Context.SaveChangesAsync();
@@ -126,8 +126,8 @@ namespace Cm.Domain.Common.Dal
             {
                 throw new ArgumentOutOfRangeException(nameof(entity.Id));
             }
-            
-            DetachLocal(entity, entity.Id);
+
+            ContextManagementService.DetachLocal(Context, entity, entity.Id);
             Context.Set<T>().Remove(entity);
             await Context.SaveChangesAsync();
         }

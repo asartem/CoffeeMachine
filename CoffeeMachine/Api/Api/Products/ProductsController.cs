@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Products.Models;
 using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
@@ -70,7 +71,8 @@ namespace Cm.Api.Api.Products
                 return NotFound();
             }
 
-            Product product = await ProductsRepository.GetAsync(id);
+            int userId = HttpContext.User.Identity.Id();
+            Product product = await ProductsRepository.GetAsync(id, userId);
 
             if (product == null)
             {
@@ -144,8 +146,11 @@ namespace Cm.Api.Api.Products
                 throw new ModelValidationException(ModelState.Values);
             }
 
-            Product product = model.ToEntity();
-            var hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name)).Any();
+            int userId = HttpContext.User.Identity.Id();
+            User seller = await UsersRepository.GetAsync(userId);
+            Product product = model.ToEntity(seller);
+
+            bool hasTheSameProduct = (await ProductsRepository.FindAsync(x => x.Name == model.Name, userId)).Any();
             if (hasTheSameProduct)
             {
                 return Conflict("Such product already exists");
@@ -187,7 +192,9 @@ namespace Cm.Api.Api.Products
                 throw new ModelValidationException(ModelState.Values);
             }
 
-            Product existingProduct = await ProductsRepository.GetAsync(id);
+            int userId = HttpContext.User.Identity.Id();
+
+            Product existingProduct = await ProductsRepository.GetAsync(id, userId);
             if (existingProduct == null)
             {
                 throw new EntityNotFoundException();
@@ -220,7 +227,8 @@ namespace Cm.Api.Api.Products
         {
             Logger.LogDebug($"Delete product with id {id}.");
 
-            Product existingProduct = await ProductsRepository.GetAsync(id);
+            int userId = HttpContext.User.Identity.Id();
+            Product existingProduct = await ProductsRepository.GetAsync(id, userId);
             if (existingProduct == null)
             {
                 return NoContent();

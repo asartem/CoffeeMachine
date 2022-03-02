@@ -21,7 +21,7 @@ namespace Cm.Api.Api.Users
     [Authorize]
     [Route("/[controller]")]
     [ApiController]
-    public class UsersController : ApiControllerBase
+    public class DepositsController : ApiControllerBase
     {
         /// <summary>
         /// Users repository
@@ -39,9 +39,9 @@ namespace Cm.Api.Api.Users
         /// <param name="usersRepository"></param>
         /// <param name="userRolesRepository"></param>
         /// <param name="logger"></param>
-        public UsersController(IUsersRepository usersRepository,
+        public DepositsController(IUsersRepository usersRepository,
                                 IRepository<UserRole> userRolesRepository,
-                                  ILogger<UsersController> logger) : base(logger)
+                                  ILogger<DepositsController> logger) : base(logger)
         {
             UsersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             UserRolesRepository = userRolesRepository ?? throw new ArgumentNullException(nameof(userRolesRepository));
@@ -146,7 +146,6 @@ namespace Cm.Api.Api.Users
         /// <summary>
         /// Updates user
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="model">User model</param>
         /// <returns></returns>
         /// <response code="201">If user was created</response>

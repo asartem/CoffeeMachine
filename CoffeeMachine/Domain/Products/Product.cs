@@ -1,5 +1,6 @@
 ﻿using System;
 using Cm.Domain.Common.Models;
+using Cm.Domain.Users;
 
 namespace Cm.Domain.Products
 {
@@ -17,7 +18,7 @@ namespace Cm.Domain.Products
         /// Name of the product
         /// </summary>
         public string Name { get; set; }
-        
+
 
         /// <summary>
         /// Price (cost)
@@ -29,20 +30,26 @@ namespace Cm.Domain.Products
         /// </summary>
         public int Qty { get; set; }
 
+        /// <summary>
+        /// Owner of the product
+        /// </summary>
+        public User Seller { get; set; }
+
         public Product() { }
-        
-        public Product(string name,  int price, int qty)
+
+        public Product(string name, User seller, int price, int qty)
         {
-            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));;
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name)); ;
             if (price < 0) throw new ArgumentOutOfRangeException(nameof(price));
             if (qty < 0) throw new ArgumentOutOfRangeException(nameof(qty));
 
             Name = name;
             Price = price;
             Qty = qty;
+            Seller = seller ?? throw new ArgumentNullException(nameof(qty));
         }
 
-        public Product(int id, string name,  int price, int qty) : this(name,  price, qty)
+        public Product(int id, string name, User seller, int price, int qty) : this(name, seller, price, qty)
         {
             if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
             Id = id;

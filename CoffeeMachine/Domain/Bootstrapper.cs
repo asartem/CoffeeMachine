@@ -1,4 +1,7 @@
 ﻿using Cm.Domain.Common.Dal;
+using Cm.Domain.Deposits;
+using Cm.Domain.Deposits.Services;
+using Cm.Domain.Deposits.Specifications;
 using Cm.Domain.Products;
 using Cm.Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +23,14 @@ namespace Cm.Domain
                     connectionString,
                     b =>
                         b.MigrationsAssembly(typeof(ApplicationContext).Assembly.FullName)));
-            
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+
+            services.AddSingleton<IValidCoinsSpecifications, ValidCoinsSpecifications>();
+            services.AddSingleton<IUserDepositService, UserDepositService>();
+            
         }
     }
 }
