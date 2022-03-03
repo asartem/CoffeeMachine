@@ -11,11 +11,16 @@ namespace Cm.Api.Api.Products.Models
     public class UpdateProductDto : ProductDtoBase
     {
         /// <summary>
+        /// Name of the product
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Price of the product
         /// </summary>
         [PriceValidation]
         public new int? Price { get; set; }
-        
+
         /// <summary>
         /// Quantity
         /// </summary>
@@ -35,7 +40,7 @@ namespace Cm.Api.Api.Products.Models
                 throw new ArgumentNullException(nameof(existingProduct));
             }
 
-            existingProduct.Name = Name ?? existingProduct.Name;
+            existingProduct.Name = string.IsNullOrWhiteSpace(Name) ? existingProduct.Name : Name;
             existingProduct.Price = Price ?? existingProduct.Price;
             existingProduct.Qty = Quantity ?? existingProduct.Qty;
             return existingProduct;

@@ -38,19 +38,26 @@ namespace Cm.Domain.Products
         /// Return product by id for specific user
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
         /// <returns></returns>
-        public virtual async Task<Product> GetAsync(int id, int userId)
+        public virtual async Task<Product> GetAsync(int id, int? sellerId = null)
         {
             if (id < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(id));
             }
 
-            Product result = (await GenericProductService.FindAsync(x => x.Id == id
-                                                                         && x.Seller.Id == userId))
-                                    .SingleOrDefault();
-            
+            Expression<Func<Product, bool>> predicate = x => x.Id == id;
+            if (sellerId.HasValue)
+            {
+                predicate = x => x.Id == id && x.Seller.Id == sellerId.Value;
+            }
+
+            Product result = (await Context.Set<Product>()
+                .Where(predicate)
+                .Include(x => x.Seller)
+                .SingleOrDefaultAsync());
+
             return result;
         }
 
@@ -60,33 +67,14 @@ namespace Cm.Domain.Products
         /// <returns></returns>
         public virtual async Task<IEnumerable<Product>> GetAllAsync()
         {
-            List<Product> result = 
-                (await GenericProductService.GetAllAsync())
-                .ToList();
+
+            IEnumerable<Product> result = (await Context.Set<Product>()
+                .Include(x => x.Seller)
+                .ToListAsync());
 
             return result;
         }
-
-        /// <summary>
-        /// Find product by expression for specific user
-        /// </summary>
-        /// <param name="expression"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public virtual async Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression, int userId)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            
-            IQueryable<Product> queryable = Context.Set<Product>()
-                .Where(expression)
-                .Where(x => x.Seller.Id == userId);
-
-            return await queryable.ToListAsync();
-        }
-
+        
         /// <summary>
         /// Find product by expression for all sellers
         /// </summary>
@@ -98,11 +86,13 @@ namespace Cm.Domain.Products
             {
                 throw new ArgumentNullException(nameof(expression));
             }
+            
+            var result = (await Context.Set<Product>()
+                .Where(expression)
+                .Include(x => x.Seller)
+                .ToListAsync());
 
-            IQueryable<Product> queryable = Context.Set<Product>()
-                .Where(expression);
-
-            return await queryable.ToListAsync();
+            return result;
         }
 
         /// <summary>
@@ -114,7 +104,7 @@ namespace Cm.Domain.Products
         {
             await GenericProductService.AddAsync(entity);
         }
-        
+
         /// <summary>
         /// Adds product
         /// </summary>
@@ -124,8 +114,8 @@ namespace Cm.Domain.Products
         {
             GenericProductService.AddToContext(entity);
         }
-        
-        
+
+
         /// <summary>
         /// Removes product
         /// </summary>

@@ -9,11 +9,6 @@ namespace Cm.Api.Api.Products.Models
     public abstract class ProductDtoBase
     {
         /// <summary>
-        /// Name of the product
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Price of the product (Cost). TODO:  ask is it Cost or AmountAvailable?
         /// </summary>
         [PriceValidation]

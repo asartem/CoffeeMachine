@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Cm.Domain.Products;
 using Cm.Domain.Purchases;
@@ -112,7 +111,7 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
         [Test]
         [Description("Should calculate total cost as qty * price for each product")]
-        public async Task PriceAndQty_SumeOfPriceAndQty()
+        public async Task PriceAndQty_SumOfPriceAndQty()
         {
             IList<Product> products = CreateDefaultProducts();
 

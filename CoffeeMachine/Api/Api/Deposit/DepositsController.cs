@@ -4,7 +4,6 @@ using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Deposit.Models;
 using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
-using Cm.Domain.Deposits;
 using Cm.Domain.Deposits.Services;
 using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;

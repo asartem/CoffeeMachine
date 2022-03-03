@@ -14,7 +14,7 @@ namespace Cm.Api.Api.Products.Models
         /// Name of the product
         /// </summary>
         [Required(ErrorMessage = "Name of the product is required")]
-        public new string Name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Converts dto to entity

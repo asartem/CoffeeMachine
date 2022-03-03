@@ -5,7 +5,7 @@ namespace Cm.Api.Api.Products.Models
     /// <summary>
     /// Validates coins
     /// </summary>
-    public class PriceValidation : ValidationAttribute
+    public class PriceValidationAttribute : ValidationAttribute
     {
         /// <summary>
         /// Returns Success in case of valid value

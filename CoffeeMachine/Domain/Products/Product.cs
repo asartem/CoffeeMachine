@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Cm.Domain.Common.Models;
 using Cm.Domain.Users;
 

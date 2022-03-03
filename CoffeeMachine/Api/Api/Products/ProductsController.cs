@@ -23,7 +23,7 @@ namespace Cm.Api.Api.Products
     [Route("/[controller]")]
     [Authorize]
     [ApiController]
-    public class ProductController : ApiControllerBase
+    public class ProductsController : ApiControllerBase
     {
         /// <summary>
         /// Products repository
@@ -41,7 +41,7 @@ namespace Cm.Api.Api.Products
         /// <param name="productsRepository"></param>
         /// <param name="usersRepository"></param>
         /// <param name="logger"></param>
-        public ProductController(IProductsRepository productsRepository,
+        public ProductsController(IProductsRepository productsRepository,
                                     IUsersRepository usersRepository,
                                     ILogger<BuysController> logger) : base(logger)
         {
@@ -71,9 +71,8 @@ namespace Cm.Api.Api.Products
                 Logger.LogError($"Product id can't be less then 1, but was {id}.");
                 return NotFound();
             }
-
-            int userId = HttpContext.User.Identity.Id();
-            Product product = await ProductsRepository.GetAsync(id, userId);
+            
+            Product product = await ProductsRepository.GetAsync(id);
 
             if (product == null)
             {
@@ -122,12 +121,12 @@ namespace Cm.Api.Api.Products
         /// </summary>
         /// <param name="model">Product</param>
         /// <returns></returns>
-        /// <response code="201">If product was created</response>
+        /// <response code="200">If product was created</response>
         /// <response code="400">If request body is null or invalid</response>   
         /// <response code="409">If product already exists</response>   
         [HttpPost, Route("")]
         [Authorize(Roles = UserRoles.Seller)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [Produces("application/json")]
@@ -163,7 +162,8 @@ namespace Cm.Api.Api.Products
             await ProductsRepository.AddAsync(product);
             var result = new ProductDto(product);
             Logger.LogDebug($"Product {product.Name} was successfully created.");
-            return Ok(result);
+            
+            return  Ok(result);
         }
 
 

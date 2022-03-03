@@ -21,10 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.22" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.22" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.22" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.22" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.22" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.22" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.22" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="Moq" Version="4.17.1" />
     <PackageReference Include="NUnit" Version="3.13.1" />
@@ -32,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoffeeMachine\Cm.HostService.csproj" />
     <ProjectReference Include="..\Domain\Cm.Domain.csproj" />
   </ItemGroup>
 

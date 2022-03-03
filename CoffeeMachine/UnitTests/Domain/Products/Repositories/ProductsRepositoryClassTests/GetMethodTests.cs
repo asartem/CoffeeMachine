@@ -44,7 +44,7 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
 
             var expectedProduct = existingProducts.First();
 
-            var result = await repository.GetAsync(expectedProduct.Id, seller.Id);
+            var result = await repository.GetAsync(expectedProduct.Id);
             Assert.AreEqual(expectedProduct.Id, result.Id);
             Assert.AreEqual(expectedProduct.Name, result.Name);
             Assert.IsNotNull(result.Name);

@@ -11,6 +11,11 @@ namespace Cm.Api.Api.Products.Models
     public class ProductDto : ProductDtoBase
     {
         /// <summary>
+        /// Name of the product
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Id of the product
         /// </summary>
         public int Id { get; set; }

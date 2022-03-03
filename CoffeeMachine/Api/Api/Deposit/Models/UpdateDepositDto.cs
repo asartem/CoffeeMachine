@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Cm.Domain.Deposits.Specifications;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Cm.Api.Api.Deposit.Models
 {

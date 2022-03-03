@@ -14,41 +14,41 @@ namespace Cm.Domain.Products
         /// Returns products by id for user
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="userId"></param>
+        /// <param name="sellerId"></param>
         /// <returns></returns>
-         Task<Product> GetAsync(int id, int userId);
+        Task<Product> GetAsync(int id, int? sellerId = null);
 
-         /// <summary>
-         /// Return all products for all users
-         /// </summary>
-         /// <returns></returns>
-         Task<IEnumerable<Product>> GetAllAsync();
+        /// <summary>
+        /// Return all products for all users
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Product>> GetAllAsync();
 
-         /// <summary>
-         /// Find product by expression for specific user
-         /// </summary>
-         /// <param name="expression"></param>
-         /// <returns></returns>
-         Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression);
+        /// <summary>
+        /// Find product by expression for specific user
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Product>> FindAsync(Expression<Func<Product, bool>> expression);
 
-         /// <summary>
-         /// Adds product
-         /// </summary>
-         /// <param name="entity"></param>
-         /// <returns></returns>
-         Task AddAsync(Product entity);
+        /// <summary>
+        /// Adds product
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task AddAsync(Product entity);
 
-         /// <summary>
-         /// Adds product to context without save
-         /// </summary>
-         /// <param name="entity"></param>
-         void AddToContext(Product entity);
+        /// <summary>
+        /// Adds product to context without save
+        /// </summary>
+        /// <param name="entity"></param>
+        void AddToContext(Product entity);
 
-         /// <summary>
-         /// Removes product
-         /// </summary>
-         /// <param name="entity"></param>
-         /// <returns></returns>
-         Task RemoveAsync(Product entity);
+        /// <summary>
+        /// Removes product
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task RemoveAsync(Product entity);
     }
 }

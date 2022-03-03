@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Buy.Models;
-using Cm.Api.Api.Products.Models;
 using Cm.Api.Common;
-using Cm.Api.Common.CustomExceptions;
-using Cm.Domain.Products;
 using Cm.Domain.Purchases;
-using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
