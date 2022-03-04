@@ -1,20 +1,19 @@
+using System;
+using System.Linq;
+using System.Reflection;
+using Cm.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System;
-using System.Linq;
-using System.Reflection;
-using Api;
 using ILogger = NLog.ILogger;
 
 
-namespace CoffeeMachine
+namespace Cm.HostService
 {
 
     /// <summary>
@@ -23,8 +22,7 @@ namespace CoffeeMachine
     public class Program
     {
         private static ILogger log;
-
-#pragma warning disable CS1591
+        
         /// <summary>
         /// Entry point for service
         /// </summary>
@@ -55,7 +53,6 @@ namespace CoffeeMachine
                 LogManager.Shutdown();
             }
         }
-#pragma warning restore CS1591
 
         /// <summary>
         /// Builds host
@@ -113,7 +110,6 @@ namespace CoffeeMachine
 
             builder.ConfigureServices((hostContext, services) =>
                 {
-                    // HACK: Suppress startup messages written by HostBuilder directly into Console!
                     services
                         .Configure<ConsoleLifetimeOptions>(hostContext.Configuration.GetSection("Console"));
                 })

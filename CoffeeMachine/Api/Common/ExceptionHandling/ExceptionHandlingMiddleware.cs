@@ -2,11 +2,14 @@
 using System.Data;
 using System.Net;
 using System.Net.Mime;
+using System.Security.Authentication;
 using System.Threading.Tasks;
+using Cm.Api.Common.CustomExceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using EntityNotFoundException = Cm.Api.Common.CustomExceptions.EntityNotFoundException;
 
-namespace Api.Common.ExceptionHandling
+namespace Cm.Api.Common.ExceptionHandling
 {
     /// <summary>
     /// Middleware to handle exceptions in a single place
@@ -64,11 +67,30 @@ namespace Api.Common.ExceptionHandling
             }
 
             string errorMessage = exception.Message;
+            
 
             if (exception is ApplicationException)
             {
                 responseStatusCode = HttpStatusCode.UnprocessableEntity;
-                errorMessage = $"Invalid order. {errorMessage}";
+                errorMessage = $"Invalid entity. {errorMessage}";
+            }
+
+            if (exception is ModelValidationException)
+            {
+                errorMessage = $"Entity is not valid. {errorMessage}";
+            }
+
+            if (exception is EntityNotFoundException || 
+                exception is Domain.Purchases.Exceptions.EntityNotFoundException)
+            {
+                responseStatusCode = HttpStatusCode.NotFound;
+                errorMessage = exception.Message;
+            }
+
+            if (exception is AuthenticationException)
+            {
+                responseStatusCode = HttpStatusCode.Unauthorized;
+                errorMessage = "User name or password are invalid";
             }
 
             if (string.IsNullOrWhiteSpace(context.Response.ContentType))

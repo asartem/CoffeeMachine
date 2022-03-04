@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Api.Application.ApiVersion
+namespace Cm.Api.Application.ApiVersion
 {
     /// <summary>
     /// Model of the api service version
@@ -27,7 +27,7 @@ namespace Api.Application.ApiVersion
         /// </summary>
         public ApiVersionModel()
         {
-            Assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Assembly = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString();
             File = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)
                 .FileVersion;
             Product = FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)

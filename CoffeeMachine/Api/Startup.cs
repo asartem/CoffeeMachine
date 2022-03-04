@@ -1,21 +1,25 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using Cm.Api.Api.Authentication.Services;
+using Cm.Api.Application.ApiVersion;
+using Cm.Api.Application.Settings;
+using Cm.Api.Common.ExceptionHandling;
+using Cm.Domain;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using System;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using Api.Application.ApiVersion;
-using Api.Common.ExceptionHandling;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
-namespace Api
+namespace Cm.Api
 {
 
     /// <summary>
@@ -68,16 +72,9 @@ namespace Api
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                 });
 
-            services.AddAutoMapper(typeof(Startup).Assembly);
+            services.RegisterDomainServices(Configuration);
 
             AddJwtTokenAuthentication(services);
-
-            //services.RegisterShipmentDraftsServices((scopedProvider) =>
-            //{
-            //    var contextAccessor = scopedProvider.GetRequiredService<IHttpContextAccessor>();
-            //    var companyId = contextAccessor.HttpContext.User.Identity.GetClaimValue<int>(ClaimTypes.CompanyId);
-            //    return companyId;
-            //});
         }
 
 
@@ -89,12 +86,7 @@ namespace Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
-
-            //
-            // WEB API Components
-            // See also: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-3.1#middleware-order
-            //
+            
             app
                 .UseRouting()
                 .UseCors()
@@ -127,28 +119,31 @@ namespace Api
         /// <param name="services"></param>
         private void AddJwtTokenAuthentication(IServiceCollection services)
         {
-            //var jwtConf = new { Secret = "" };//Configuration.GetSection("SC:Auth:Jwt").Get<JwtOptions>(config => config.BindNonPublicProperties = true);
-            //var key = System.Text.Encoding.ASCII.GetBytes(jwtConf.Secret);
-            //services
-            //    .AddAuthentication(x =>
-            //    {
-            //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    })
-            //    .AddJwtBearer(x =>
-            //    {
-            //        // HACK: Custom token parser to translate SC.Web.Auth token format into proper ClaimsIdentity-based SecurityTokenDescriptor
-            //        //x.RequireHttpsMetadata = false;
-            //        //x.SaveToken = true;
-            //        //x.TokenValidationParameters = new TokenValidationParameters
-            //        //{
-            //        //    ValidateIssuerSigningKey = true,
-            //        //    IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        //    ValidateIssuer = false,
-            //        //    ValidateAudience = false
-            //        //};
-            //    });
+            IConfigurationSection appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
 
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services
+                .AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
         }
 
     }

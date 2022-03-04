@@ -1,8 +1,8 @@
-﻿using Api.Common;
+﻿using Cm.Api.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Application.ApiVersion
+namespace Cm.Api.Application.ApiVersion
 {
     /// <summary>
     ///     Service version controller
