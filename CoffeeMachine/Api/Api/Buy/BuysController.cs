@@ -4,6 +4,7 @@ using Cm.Api.Api.Authentication.Models;
 using Cm.Api.Api.Buy.Models;
 using Cm.Api.Common;
 using Cm.Domain.Purchases;
+using Cm.Domain.Purchases.Models;
 using Cm.Domain.Users.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,6 @@ namespace Cm.Api.Api.Buy
     /// Returns products
     /// </summary>
     [Route("/[controller]")]
-    [Authorize]
     [ApiController]
     public class BuysController : ApiControllerBase
     {
@@ -35,9 +35,8 @@ namespace Cm.Api.Api.Buy
                                     ILogger<BuysController> logger) : base(logger)
         {
             PurchaseService = purchaseService ?? throw new ArgumentNullException(nameof(purchaseService));
-
         }
-        
+
 
         /// <summary>
         /// Creates new purchase
@@ -47,7 +46,7 @@ namespace Cm.Api.Api.Buy
         /// <response code="201">If purchase was created</response>
         /// <response code="400">If request body is null or invalid</response>    
         [HttpPost, Route("")]
-        [Authorize(Roles = UserRoles.Buyer)]
+        //[Authorize(Roles = UserRoles.Buyer)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
@@ -62,13 +61,15 @@ namespace Cm.Api.Api.Buy
                 Logger.LogError(errorMsg);
                 return BadRequest(errorMsg);
             }
-            
-            var order = await PurchaseService.CreateOrderAsync(model.ProductsAndQuantity, buyerId);
+
+            Order order = await PurchaseService.CreateOrderAsync(model.ProductsAndQuantity, buyerId);
 
             var result = new OrderDto(order);
-            Logger.LogDebug($"");
+            Logger.LogDebug("Purchase was made");
             return Ok(result);
         }
-        
+
+
+
     }
 }

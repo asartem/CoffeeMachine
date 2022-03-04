@@ -99,8 +99,10 @@ namespace Cm.Domain.Purchases
 
                 product.ReduceQty(qty);
                 buyer.ReduceDeposit(itemCost); // TODO: not clear, should I increase seller deposit or not.
+                
+                var soldProduct = new Product(product.Id, product.Name, product.Seller, product.Price, qty);
 
-                ProductsRepository.AddToContext(product);
+                ProductsRepository.AddToContext(soldProduct);
             }
 
             UsersRepository.AddToContext(buyer);

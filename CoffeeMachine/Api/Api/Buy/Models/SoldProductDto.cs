@@ -3,8 +3,13 @@
     /// <summary>
     /// Product and qty
     /// </summary>
-    public class ItemDto
+    public class SoldProductDto
     {
+        /// <summary>
+        /// Product id
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Product name
         /// </summary>
@@ -28,11 +33,13 @@
         /// <summary>
         /// Create instance of the class
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="name"></param>
         /// <param name="price"></param>
         /// <param name="quantity"></param>
-        public ItemDto(string name, int price, int quantity)
+        public SoldProductDto(int id, string name, int price, int quantity)
         {
+            Id = id;
             Name = name;
             Price = price;
             Quantity = quantity;

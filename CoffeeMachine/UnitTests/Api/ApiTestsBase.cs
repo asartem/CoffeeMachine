@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using System.Text;
 using Cm.Domain.Users;
-using Cm.Domain.Users.Roles;
 using Cm.HostService;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,8 +32,8 @@ namespace Cm.Tests.Api
             HttpClient client = Factory.CreateClient();
 
             var tokenFactory = new TokenFactory();
-            var sellerToken = tokenFactory.GenerateStandardToken(JwtSecret, user);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", sellerToken);
+            var token = tokenFactory.GenerateStandardToken(JwtSecret, user);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
             return client;
         }
 

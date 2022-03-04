@@ -101,11 +101,5 @@ namespace Cm.Tests.Api.Products.ProductsControllerClassTests
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
         }
-
-        [Test]
-        [Description("Should return not content if there is no products")]
-        public async Task NoProducts_NoContent()
-        {
-        }
     }
 }

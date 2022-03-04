@@ -76,11 +76,5 @@ namespace Cm.Tests.Api.Products.ProductsControllerClassTests
             Assert.Greater(result.Count, 1);
 
         }
-
-        [Test]
-        [Description("Should return not content for empty list of products")]
-        public async Task NoProducts_NoContent()
-        {
-        }
     }
 }

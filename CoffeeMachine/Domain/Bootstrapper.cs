@@ -2,6 +2,7 @@
 using Cm.Domain.Deposits.Services;
 using Cm.Domain.Deposits.Specifications;
 using Cm.Domain.Products;
+using Cm.Domain.Purchases;
 using Cm.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace Cm.Domain
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductsRepository, ProductsRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
 
             services.AddSingleton<IValidCoinsSpecifications, ValidCoinsSpecifications>();
             services.AddSingleton<IUserDepositService, UserDepositService>();
