@@ -57,3 +57,17 @@ Feel free to use Slack, Discord, Email, Linkedin or carrier pigeon to get in tou
 ### Will this code be shown to the client?
 
 Assume yes. Should also help us in reducing the time by clients evaluating profiles.
+
+
+
+### Solution
+The JWT token authentication was implemented. User with right token
+and role should be used for some operations.
+
+Elemts of DDD and TDD were provided. Some cases were described without implentation not to spend a lot of time.
+Some comments were left in places were 2+ solutions are possible and the response was not received from recruter.
+
+Integration tests were made for api and product repository (local MSSQL database is required)
+Unit tests were made for service which calculates an order (buy).
+
+The solution  was implemented by  Artem G.

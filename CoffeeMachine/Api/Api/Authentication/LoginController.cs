@@ -75,5 +75,9 @@ namespace Cm.Api.Api.Authentication
             return Ok(resultToken);
         }
 
+        //TODO: to allow user to get signal that somebody was already authenticated,
+        // we can store list of active tokens and check for each new CreateToken command, that there is already issued token
+        // which was not expired.
+
     }
 }
