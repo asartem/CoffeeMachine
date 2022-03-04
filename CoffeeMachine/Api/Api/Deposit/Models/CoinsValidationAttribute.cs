@@ -12,7 +12,7 @@ namespace Cm.Api.Api.Deposit.Models
         /// <summary>
         /// Coins validation algorithm
         /// </summary>
-        private readonly IValidCoinsSpecifications specifications;
+        private readonly IValidCoinsSpecification specification;
 
         /// <summary>
         /// Create instance of the validation attribute
@@ -20,7 +20,7 @@ namespace Cm.Api.Api.Deposit.Models
         /// <exception cref="ArgumentNullException"></exception>
         public CoinsValidationAttribute()
         {
-            specifications = new ValidCoinsSpecifications();
+            specification = new ValidCoinsSpecification();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Cm.Api.Api.Deposit.Models
         {
             int? amount = (int?)value;
 
-            if (amount != null && specifications.IsSatisfiedBy(amount.Value) == false)
+            if (amount != null && specification.IsSatisfiedBy(amount.Value) == false)
             {
                 string errorMessage = "Only coins 5,10,20,50 and 100 are allowed";
                 return new ValidationResult(errorMessage);

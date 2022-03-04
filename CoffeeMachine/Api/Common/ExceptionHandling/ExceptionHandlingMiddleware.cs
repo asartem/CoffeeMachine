@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cm.Api.Common.CustomExceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using EntityNotFoundException = Cm.Api.Common.CustomExceptions.EntityNotFoundException;
 
 namespace Cm.Api.Common.ExceptionHandling
 {
@@ -76,7 +77,6 @@ namespace Cm.Api.Common.ExceptionHandling
 
             if (exception is ModelValidationException)
             {
-                responseStatusCode = HttpStatusCode.BadRequest;
                 errorMessage = $"Entity is not valid. {errorMessage}";
             }
 

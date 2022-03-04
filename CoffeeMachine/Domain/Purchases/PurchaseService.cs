@@ -99,10 +99,8 @@ namespace Cm.Domain.Purchases
 
                 product.ReduceQty(qty);
                 buyer.ReduceDeposit(itemCost); // TODO: not clear, should I increase seller deposit or not.
-                
-                var soldProduct = new Product(product.Id, product.Name, product.Seller, product.Price, qty);
 
-                ProductsRepository.AddToContext(soldProduct);
+                ProductsRepository.AddToContext(product);
             }
 
             UsersRepository.AddToContext(buyer);
@@ -131,6 +129,35 @@ namespace Cm.Domain.Purchases
                     throw new ProductIsOutOfStockException($"Only {product.Qty} items left for product {product.Name}");
                 }
             }
+        }
+
+        /// <summary>
+        /// Flag for dispose
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// Dispose context
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    UsersRepository.Dispose();
+                    ProductsRepository.Dispose();
+                }
+            }
+            disposed = true;
+
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

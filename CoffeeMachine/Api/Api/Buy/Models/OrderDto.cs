@@ -46,7 +46,9 @@ namespace Cm.Api.Api.Buy.Models
             foreach (var soldProduct in order.ProductsAndQty)
             {
                 Product product = soldProduct.Key;
-                var itemDto = new SoldProductDto(product.Id, product.Name, product.Price, product.Qty);
+                int soldQty = soldProduct.Value;
+                var itemDto = new SoldProductDto(product.Id, product.Name, product.Price, soldQty);
+
                 PurchasedItems.Add(itemDto);
             }
 

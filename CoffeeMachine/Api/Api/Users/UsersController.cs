@@ -246,5 +246,17 @@ namespace Cm.Api.Api.Users
             Logger.LogDebug($"User {user.Name} was successfully created.");
             return user;
         }
+
+
+        /// <summary>
+        /// Disposes all contexts
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            UsersRepository.Dispose();
+            UserRolesRepository.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

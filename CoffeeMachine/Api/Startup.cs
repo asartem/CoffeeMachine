@@ -72,7 +72,7 @@ namespace Cm.Api
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Include;
                 });
 
-            services.RegisterDalServices(Configuration);
+            services.RegisterDomainServices(Configuration);
 
             AddJwtTokenAuthentication(services);
 

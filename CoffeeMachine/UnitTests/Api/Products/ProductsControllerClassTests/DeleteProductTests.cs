@@ -78,6 +78,10 @@ namespace Cm.Tests.Api.Products.ProductsControllerClassTests
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
         
+        /// <summary>
+        /// Create product test data
+        /// </summary>
+        /// <returns></returns>
         private async Task<ProductDto> CreateProductForUpdate()
         {
             var createModel = new CreateProductDto()

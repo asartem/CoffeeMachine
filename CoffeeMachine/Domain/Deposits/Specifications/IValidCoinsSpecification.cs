@@ -3,7 +3,7 @@
     /// <summary>
     /// Validates coins
     /// </summary>
-    public interface IValidCoinsSpecifications
+    public interface IValidCoinsSpecification
     {
         /// <summary>
         /// Returns check results

@@ -73,7 +73,7 @@ namespace Cm.Tests
             var appSettings = appSettingsSection.Get<AppSettings>();
             JwtSecret = appSettings.Secret;
 
-            ServiceCollection.RegisterDalServices(configuration);
+            ServiceCollection.RegisterDomainServices(configuration);
             serviceProvider.Dispose();
 
             

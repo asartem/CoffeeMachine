@@ -6,7 +6,7 @@ using Cm.Domain.Common.Models;
 
 namespace Cm.Domain.Common.Dal
 {
-    public interface IRepository<T> where T : IEntity
+    public interface IRepository<T> : IDisposable where T : IEntity
     {
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();

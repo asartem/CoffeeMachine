@@ -6,7 +6,7 @@ namespace Cm.Domain.Deposits.Specifications
     /// <summary>
     /// Validates coins
     /// </summary>
-    public class ValidCoinsSpecifications : IValidCoinsSpecifications
+    public class ValidCoinsSpecification : IValidCoinsSpecification
     {
         /// <summary>
         /// Returns check results

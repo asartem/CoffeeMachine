@@ -21,14 +21,14 @@
         public int Price { get; set; }
 
         /// <summary>
-        /// Number of items
+        /// Number of sold products
         /// </summary>
-        public int Quantity { get; set; }
+        public int SoldQuantity { get; set; }
 
         /// <summary>
         /// Total cost
         /// </summary>
-        public int Cost => Price * Quantity;
+        public int Cost => Price * SoldQuantity;
 
         /// <summary>
         /// Create instance of the class
@@ -36,13 +36,13 @@
         /// <param name="id"></param>
         /// <param name="name"></param>
         /// <param name="price"></param>
-        /// <param name="quantity"></param>
-        public SoldProductDto(int id, string name, int price, int quantity)
+        /// <param name="soldQuantity"></param>
+        public SoldProductDto(int id, string name, int price, int soldQuantity)
         {
             Id = id;
             Name = name;
             Price = price;
-            Quantity = quantity;
+            SoldQuantity = soldQuantity;
         }
     }
 }

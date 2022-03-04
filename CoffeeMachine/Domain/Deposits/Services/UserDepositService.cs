@@ -12,13 +12,13 @@ namespace Cm.Domain.Deposits.Services
         /// <summary>
         /// Coins specification
         /// </summary>
-        public IValidCoinsSpecifications Specification { get; }
+        public IValidCoinsSpecification Specification { get; }
 
         /// <summary>
         /// Checks specification
         /// </summary>
         /// <param name="specification"></param>
-        public UserDepositService(IValidCoinsSpecifications specification)
+        public UserDepositService(IValidCoinsSpecification specification)
         {
             Specification = specification ?? throw new ArgumentNullException(nameof(specification));
         }

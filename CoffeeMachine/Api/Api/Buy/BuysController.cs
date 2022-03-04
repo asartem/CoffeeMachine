@@ -46,7 +46,7 @@ namespace Cm.Api.Api.Buy
         /// <response code="201">If purchase was created</response>
         /// <response code="400">If request body is null or invalid</response>    
         [HttpPost, Route("")]
-        //[Authorize(Roles = UserRoles.Buyer)]
+        [Authorize(Roles = UserRoles.Buyer)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
@@ -69,7 +69,15 @@ namespace Cm.Api.Api.Buy
             return Ok(result);
         }
 
-
+        /// <summary>
+        /// Disposes all contexts
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            PurchaseService.Dispose();
+            base.Dispose(disposing);
+        }
 
     }
 }

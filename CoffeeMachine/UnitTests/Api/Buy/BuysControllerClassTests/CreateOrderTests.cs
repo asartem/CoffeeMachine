@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,17 +25,15 @@ namespace Cm.Tests.Api.Buy.BuysControllerClassTests
         private User buyer;
         private ProductDto createdProduct1;
         private ProductDto createdProduct2;
+        private IUsersRepository usersRepository;
 
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
             ServiceProvider = TestDataServiceCollection.BuildServiceProvider();
-            var repository = ServiceProvider.GetService<IUsersRepository>();
-
-            buyer = (await repository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
-            buyer.Deposit = 150;
-            await repository.AddAsync(buyer);
-            seller = (await repository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
+            usersRepository = ServiceProvider.GetService<IUsersRepository>();
+           
+            seller = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
         }
 
         [OneTimeTearDown]
@@ -50,11 +47,19 @@ namespace Cm.Tests.Api.Buy.BuysControllerClassTests
         {
             await CleanUpProducts();
 
+            
+            buyer = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Buyer)).First();
+            buyer.Deposit = 150;
+            await usersRepository.AddAsync(buyer);
+            
+
             TestClientSeller = CreateClientWithToken(seller);
             TestClientBuyer = CreateClientWithToken(buyer);
 
             createdProduct1 = await CreateProductForUpdate("TestProduct1");
             createdProduct2 = await CreateProductForUpdate("TestProduct2");
+
+        
         }
 
 
@@ -89,8 +94,8 @@ namespace Cm.Tests.Api.Buy.BuysControllerClassTests
 
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(product1SoldQty, purchasedProduct1.Quantity);
-            Assert.AreEqual(product2SoldQty, purchasedProduct2.Quantity);
+            Assert.AreEqual(product1SoldQty, purchasedProduct1.SoldQuantity);
+            Assert.AreEqual(product2SoldQty, purchasedProduct2.SoldQuantity);
 
         }
 
@@ -172,10 +177,13 @@ namespace Cm.Tests.Api.Buy.BuysControllerClassTests
 
 
         [Test]
-        [Description("Should allow seller to buy products")]
-        public async Task Seller_CanBuy()
+        [Description("Should not allow seller to buy products. Not clear, need more details")]
+        public async Task Seller_Forbidden()
         {
             // Arrange
+
+            seller.Deposit = 150;
+            await usersRepository.AddAsync(buyer);
 
             const int product1SoldQty = 2;
             const int product2SoldQty = 3;
@@ -194,7 +202,67 @@ namespace Cm.Tests.Api.Buy.BuysControllerClassTests
 
 
             // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+
+        }
+
+
+        [Test]
+        [Description("Should return UnprocessableEntity if there is not enough money")]
+        public async Task NotEnoughMoney_UnprocessableEntity()
+        {
+            // Arrange
+
+            buyer = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Buyer)).First();
+            buyer.Deposit = 10;
+            await usersRepository.AddAsync(buyer);
+
+            const int product1SoldQty = 2;
+            const int product2SoldQty = 3;
+            var model = new CreateOrderDto
+            {
+                ProductsAndQuantity = new Dictionary<int, int>
+                {
+                    {createdProduct1.Id, product1SoldQty},
+                    {createdProduct2.Id, product2SoldQty}
+                }
+            };
+            StringContent httpContent = ContentHelper.GetStringContent(model);
+
+            // Act
+            var response = await TestClientBuyer.PostAsync("/buys", httpContent);
+
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.UnprocessableEntity, response.StatusCode);
+
+        }
+
+
+        [Test]
+        [Description("Should not allow for anonymous")]
+        public async Task Anonymous_Unauthorized()
+        {
+            // Arrange
+            const int product1SoldQty = 2;
+            const int product2SoldQty = 3;
+            var model = new CreateOrderDto
+            {
+                ProductsAndQuantity = new Dictionary<int, int>
+                {
+                    {createdProduct1.Id, product1SoldQty},
+                    {createdProduct2.Id, product2SoldQty}
+                }
+            };
+            StringContent httpContent = ContentHelper.GetStringContent(model);
+
+            var client = Factory.CreateClient();
+            // Act
+            var response = await client.PostAsync("/buys", httpContent);
+
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
 
         }
 

@@ -8,7 +8,7 @@ namespace Cm.Domain.Products
     /// <summary>
     /// Interface for products repository
     /// </summary>
-    public interface IProductsRepository
+    public interface IProductsRepository : IDisposable
     {
         /// <summary>
         /// Returns products by id for user

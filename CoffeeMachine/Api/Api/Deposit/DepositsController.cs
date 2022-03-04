@@ -6,7 +6,6 @@ using Cm.Api.Common;
 using Cm.Api.Common.CustomExceptions;
 using Cm.Domain.Deposits.Services;
 using Cm.Domain.Users;
-using Cm.Domain.Users.Roles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,23 +32,16 @@ namespace Cm.Api.Api.Deposit
         public IUsersRepository UsersRepository { get; }
 
         /// <summary>
-        /// Create the instance of the class
-        /// </summary>
-        /// <param name="depositService"></param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public DepositsController(IUserDepositService depositService)
-        {
-            DepositService = depositService ?? throw new ArgumentNullException(nameof(depositService));
-        }
-
-        /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="depositService"></param>
         /// <param name="usersRepository"></param>
         /// <param name="logger"></param>
-        public DepositsController(IUsersRepository usersRepository,
+        public DepositsController(IUserDepositService depositService,
+                                  IUsersRepository usersRepository,
                                   ILogger<DepositsController> logger) : base(logger)
         {
+            DepositService = depositService ?? throw new ArgumentNullException(nameof(depositService));
             UsersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
 
         }
@@ -95,7 +87,7 @@ namespace Cm.Api.Api.Deposit
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
-        public async Task<ActionResult<int>> UpdateDepositAsync([FromBody] UpdateDepositDto model)
+        public async Task<ActionResult<int>> AddToDepositAsync([FromBody] UpdateDepositDto model)
         {
             int id = HttpContext.User.Identity.Id();
 
@@ -137,7 +129,6 @@ namespace Cm.Api.Api.Deposit
         /// <response code="200">If user's deposit was reset to 0</response>
         /// <response code="404">If user was not found</response>   
         [HttpPut, Route("reset")]
-        [Authorize(Roles = UserRoles.Buyer)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
@@ -160,6 +151,16 @@ namespace Cm.Api.Api.Deposit
 
             Logger.LogDebug($"User {id} deposit was successfully removed.");
             return Ok();
+        }
+
+        /// <summary>
+        /// Disposes all contexts
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            UsersRepository.Dispose();
+            base.Dispose(disposing);
         }
 
     }

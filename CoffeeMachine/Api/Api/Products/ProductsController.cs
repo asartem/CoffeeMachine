@@ -243,5 +243,16 @@ namespace Cm.Api.Api.Products
             Logger.LogDebug($"Product {id} was successfully removed.");
             return Ok();
         }
+
+        /// <summary>
+        /// Disposes all contexts
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected override void Dispose(bool disposing)
+        {
+            UsersRepository.Dispose();
+            ProductsRepository.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

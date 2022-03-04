@@ -25,11 +25,9 @@ namespace Cm.Tests.Domain.Products.Repositories.ProductsRepositoryClassTests
         [OneTimeSetUp]
         public async Task Setup()
         {
-            
             var usersRepository = ServiceProvider.GetService<IUsersRepository>();
             seller = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
-
-            // Create test data here
+            
         }
 
         [TearDown]

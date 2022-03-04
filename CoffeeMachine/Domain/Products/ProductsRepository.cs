@@ -11,7 +11,7 @@ namespace Cm.Domain.Products
     /// <summary>
     /// Products repository
     /// </summary>
-    public class ProductsRepository : IProductsRepository
+    public class ProductsRepository : IProductsRepository, IDisposable
     {
         /// <summary>
         /// Generic implementation of repository
@@ -124,6 +124,34 @@ namespace Cm.Domain.Products
         public async Task RemoveAsync(Product entity)
         {
             await GenericProductService.RemoveAsync(entity);
+        }
+
+        /// <summary>
+        /// Flag for dispose
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// Dispose context
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    Context.Dispose();
+                }
+            }
+            disposed = true;
+            
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 

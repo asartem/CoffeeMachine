@@ -97,6 +97,31 @@ namespace Cm.Domain.Common.Dal
             await Context.SaveChangesAsync();
         }
 
-        
+        /// <summary>
+        /// Flag for dispose
+        /// </summary>
+        private bool disposed = false;
+
+        /// <summary>
+        /// Dispose context
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    Context.Dispose();
+                }
+            }
+            disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

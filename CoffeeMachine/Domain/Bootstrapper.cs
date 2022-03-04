@@ -13,7 +13,7 @@ namespace Cm.Domain
     public static class Bootstrapper
     {
 
-        public static void RegisterDalServices(this IServiceCollection services, IConfiguration configuration)
+        public static void RegisterDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
 
             const string connectionStringKey = "DefaultConnection";
@@ -29,7 +29,7 @@ namespace Cm.Domain
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IPurchaseService, PurchaseService>();
 
-            services.AddSingleton<IValidCoinsSpecifications, ValidCoinsSpecifications>();
+            services.AddSingleton<IValidCoinsSpecification, ValidCoinsSpecification>();
             services.AddSingleton<IUserDepositService, UserDepositService>();
             
         }
