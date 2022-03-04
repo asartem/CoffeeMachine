@@ -14,9 +14,5 @@ namespace Cm.Domain.Purchases.Exceptions
         public ProductIsOutOfStockException(string message) : base(message)
         {
         }
-
-        public ProductIsOutOfStockException() : base("Product is out of stock")
-        {
-        }
     }
 }

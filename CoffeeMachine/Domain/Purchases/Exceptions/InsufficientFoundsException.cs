@@ -7,6 +7,10 @@ namespace Cm.Domain.Purchases.Exceptions
     /// </summary>
     public class InsufficientFoundsException : ApplicationException
     {
+        /// <summary>
+        /// Creates the new instance of the class
+        /// </summary>
+        /// <param name="message"></param>
         public InsufficientFoundsException(string s) : base(s)
         {
         }

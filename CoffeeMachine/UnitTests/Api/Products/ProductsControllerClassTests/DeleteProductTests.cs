@@ -1,8 +1,5 @@
 ﻿using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using Cm.Api.Api.Products.Models;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Cm.Tests.Api.Products.ProductsControllerClassTests
@@ -76,27 +73,6 @@ namespace Cm.Tests.Api.Products.ProductsControllerClassTests
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-        
-        /// <summary>
-        /// Create product test data
-        /// </summary>
-        /// <returns></returns>
-        private async Task<ProductDto> CreateProductForUpdate()
-        {
-            var createModel = new CreateProductDto()
-            {
-                Name = "TestProduct1",
-                Price = 100,
-                Quantity = 10
-            };
-
-            StringContent httpContent = ContentHelper.GetStringContent(createModel);
-            var response = await TestClientSeller.PostAsync("/products", httpContent);
-
-            var resultAsString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<ProductDto>(resultAsString);
-            return result;
         }
         
     }

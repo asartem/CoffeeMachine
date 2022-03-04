@@ -110,7 +110,6 @@ namespace Cm.HostService
 
             builder.ConfigureServices((hostContext, services) =>
                 {
-                    // HACK: Suppress startup messages written by HostBuilder directly into Console!
                     services
                         .Configure<ConsoleLifetimeOptions>(hostContext.Configuration.GetSection("Console"));
                 })

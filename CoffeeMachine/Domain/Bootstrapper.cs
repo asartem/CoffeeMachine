@@ -10,9 +10,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Cm.Domain
 {
+    /// <summary>
+    /// Register services
+    /// </summary>
     public static class Bootstrapper
     {
-
+        /// <summary>
+        /// Register service for this library
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void RegisterDomainServices(this IServiceCollection services, IConfiguration configuration)
         {
 

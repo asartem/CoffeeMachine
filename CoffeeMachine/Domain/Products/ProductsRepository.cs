@@ -11,7 +11,7 @@ namespace Cm.Domain.Products
     /// <summary>
     /// Products repository
     /// </summary>
-    public class ProductsRepository : IProductsRepository, IDisposable
+    public class ProductsRepository : IProductsRepository
     {
         /// <summary>
         /// Generic implementation of repository
@@ -148,6 +148,9 @@ namespace Cm.Domain.Products
             
         }
 
+        /// <summary>
+        /// Cleanup repository
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

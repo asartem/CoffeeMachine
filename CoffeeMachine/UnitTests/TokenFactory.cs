@@ -24,22 +24,19 @@ namespace Cm.Tests
 
         public string GenerateStandardToken(string secret,
             int userId,
-            string userRole = UserRoles.Seller,
-            TimeSpan? expiresIn = null)
+            string userRole = UserRoles.Seller)
         {
             User user = CreateDefaultUser(userId, userRole);
-            var tokenString = GenerateStandardToken(secret, user, expiresIn);
+            var tokenString = GenerateStandardToken(secret, user);
             return tokenString;
         }
 
         public string GenerateStandardToken(string secret,
-            User user,
-            TimeSpan? expiresIn = null)
+            User user)
         {
-            expiresIn ??= TimeSpan.FromSeconds(200);
 
             ClaimsIdentity identity = CreateClaimsIdentity(user);
-            var tokenString = IssuerToken(secret, expiresIn, identity);
+            var tokenString = IssuerToken(secret, identity);
             return tokenString;
         }
 
@@ -66,17 +63,16 @@ namespace Cm.Tests
             return identity;
         }
 
-        private static string IssuerToken(string secret, TimeSpan? expiresIn, ClaimsIdentity identity)
+        private static string IssuerToken(string secret, ClaimsIdentity identity)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identity,
-                //Expires = new DateTime(expiresIn?.Ticks ?? TimeSpan.FromMinutes(1).Ticks),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
 

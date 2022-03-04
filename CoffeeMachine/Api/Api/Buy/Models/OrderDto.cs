@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cm.Domain.Products;
 using Cm.Domain.Purchases.Models;
+using Newtonsoft.Json;
 
 namespace Cm.Api.Api.Buy.Models
 {
@@ -29,7 +30,10 @@ namespace Cm.Api.Api.Buy.Models
         /// </summary>
         public IList<int> Change;
 
-
+        /// <summary>
+        /// Creates the instance of the class
+        /// </summary>
+        [JsonConstructor]
         public OrderDto(){}
 
         /// <summary>

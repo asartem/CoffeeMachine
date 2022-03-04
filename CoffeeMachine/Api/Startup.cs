@@ -75,13 +75,6 @@ namespace Cm.Api
             services.RegisterDomainServices(Configuration);
 
             AddJwtTokenAuthentication(services);
-
-            //services.RegisterShipmentDraftsServices((scopedProvider) =>
-            //{
-            //    var contextAccessor = scopedProvider.GetRequiredService<IHttpContextAccessor>();
-            //    var companyId = contextAccessor.HttpContext.User.Identity.GetClaimValue<int>(ClaimTypes.CompanyId);
-            //    return companyId;
-            //});
         }
 
 
@@ -93,12 +86,7 @@ namespace Cm.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
-
-            //
-            // WEB API Components
-            // See also: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-3.1#middleware-order
-            //
+            
             app
                 .UseRouting()
                 .UseCors()

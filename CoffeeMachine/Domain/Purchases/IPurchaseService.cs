@@ -10,6 +10,10 @@ namespace Cm.Domain.Purchases
     /// </summary>
     public interface IPurchaseService : IDisposable
     {
+        /// <summary>
+        /// Make a purchase
+        /// </summary>
+        /// <returns></returns>
         Task<Order> CreateOrderAsync(IDictionary<int, int> productIdsAndQty, int buyerId);
     }
 }

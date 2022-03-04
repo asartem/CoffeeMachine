@@ -19,20 +19,20 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
         private IPurchaseService service;
         private Mock<IProductsRepository> productsRepositoryMock;
         private Mock<IUsersRepository> usersRepositoryMock;
-        private const int buyerId = 100;
-        int productId = 1;
-        int productQty = 10;
-        int qtyPurchased = 2;
+        private const int BuyerId = 100;
+        const int ProductId = 1;
+        const int ProductQty = 10;
+        const int QtyPurchased = 2;
         private User seller;
         private User buyer;
-        private int buyerDeposit = 200;
-        int price = 20;
+        const int BuyerDeposit = 200;
+        const int Price = 20;
 
         [SetUp]
         public void Setup()
         {
             seller = new User("Seller", "1234", 0, new UserRole(1, "Seller"));
-            buyer = new User("Buyer", "1234", buyerDeposit, new UserRole(2, "Buyer"));
+            buyer = new User("Buyer", "1234", BuyerDeposit, new UserRole(2, "Buyer"));
 
             productsRepositoryMock = new Mock<IProductsRepository>();
             usersRepositoryMock = new Mock<IUsersRepository>();
@@ -47,14 +47,14 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
         {
             IList<Product> products = new List<Product>
             {
-                new Product(productId, "Test", seller, price, productQty)
+                new Product(ProductId, "Test", seller, Price, ProductQty)
             };
 
             productsRepositoryMock.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Product, bool>>>()))
                 .ReturnsAsync(products);
 
-            var dic = new Dictionary<int, int> { { productId, qtyPurchased } };
-            service.CreateOrderAsync(dic, buyerId);
+            var dic = new Dictionary<int, int> { { ProductId, QtyPurchased } };
+            service.CreateOrderAsync(dic, BuyerId);
 
             productsRepositoryMock.Verify(x => x.AddToContext(products[0]), Times.Exactly(products.Count));
             usersRepositoryMock.Verify(x => x.AddToContext(buyer), Times.Once);
@@ -73,10 +73,10 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             var dic = new Dictionary<int, int>
             {
-                { products[0].Id, qtyPurchased },
-                { products[1].Id, qtyPurchased }
+                { products[0].Id, QtyPurchased },
+                { products[1].Id, QtyPurchased }
             };
-            service.CreateOrderAsync(dic, buyerId);
+            service.CreateOrderAsync(dic, BuyerId);
 
             productsRepositoryMock.Verify(x => x.AddToContext(products[0]), Times.Once);
             productsRepositoryMock.Verify(x => x.AddToContext(products[1]), Times.Once);
@@ -96,16 +96,16 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             var dic = new Dictionary<int, int>
             {
-                { products[0].Id, qtyPurchased },
-                { products[1].Id, qtyPurchased }
+                { products[0].Id, QtyPurchased },
+                { products[1].Id, QtyPurchased }
             };
-            var order = await service.CreateOrderAsync(dic, buyerId);
+            var order = await service.CreateOrderAsync(dic, BuyerId);
 
-            Assert.AreEqual(products[0].Qty, productQty - qtyPurchased);
-            Assert.AreEqual(products[1].Qty, productQty - qtyPurchased);
+            Assert.AreEqual(products[0].Qty, ProductQty - QtyPurchased);
+            Assert.AreEqual(products[1].Qty, ProductQty - QtyPurchased);
 
-            Assert.AreEqual(order.ProductsAndQty[products[0]], qtyPurchased);
-            Assert.AreEqual(order.ProductsAndQty[products[1]], qtyPurchased);
+            Assert.AreEqual(order.ProductsAndQty[products[0]], QtyPurchased);
+            Assert.AreEqual(order.ProductsAndQty[products[1]], QtyPurchased);
 
         }
 
@@ -120,12 +120,12 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             var dic = new Dictionary<int, int>
             {
-                { products[0].Id, qtyPurchased },
-                { products[1].Id, qtyPurchased }
+                { products[0].Id, QtyPurchased },
+                { products[1].Id, QtyPurchased }
             };
-            var order = await service.CreateOrderAsync(dic, buyerId);
+            var order = await service.CreateOrderAsync(dic, BuyerId);
 
-            var expectedTotal = products.Sum(x => x.Price * qtyPurchased);
+            var expectedTotal = products.Sum(x => x.Price * QtyPurchased);
             Assert.AreEqual(expectedTotal, order.TotalCost);
         }
 
@@ -140,12 +140,12 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             var dic = new Dictionary<int, int>
             {
-                { products[0].Id, qtyPurchased },
-                { products[1].Id, qtyPurchased }
+                { products[0].Id, QtyPurchased },
+                { products[1].Id, QtyPurchased }
             };
-            var order = await service.CreateOrderAsync(dic, buyerId);
+            var order = await service.CreateOrderAsync(dic, BuyerId);
 
-            var expected = buyerDeposit - products.Sum(x => x.Price * qtyPurchased);
+            var expected = BuyerDeposit - products.Sum(x => x.Price * QtyPurchased);
             Assert.AreEqual(expected, buyer.Deposit);
             Assert.AreEqual(expected, order.ChangeAmount);
         }
@@ -157,14 +157,14 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             IEnumerable<Product> products = new List<Product>
             {
-                new Product(1, "Test", seller, price, productQty)
+                new Product(1, "Test", seller, Price, ProductQty)
             };
 
             productsRepositoryMock.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Product, bool>>>()))
                 .ReturnsAsync(products);
 
-            var dic = new Dictionary<int, int> { { 10, productQty } };
-            Assert.ThrowsAsync<EntityNotFoundException>(() => service.CreateOrderAsync(dic, buyerId));
+            var dic = new Dictionary<int, int> { { 10, ProductQty } };
+            Assert.ThrowsAsync<EntityNotFoundException>(() => service.CreateOrderAsync(dic, BuyerId));
 
         }
 
@@ -175,14 +175,14 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
 
             IEnumerable<Product> products = new List<Product>
             {
-                new Product(1, "Test", seller, price, productQty)
+                new Product(1, "Test", seller, Price, ProductQty)
             };
 
             productsRepositoryMock.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Product, bool>>>()))
                 .ReturnsAsync(products);
 
-            var dic = new Dictionary<int, int> { { productId, productQty + 1 } };
-            Assert.ThrowsAsync<ProductIsOutOfStockException>(() => service.CreateOrderAsync(dic, buyerId));
+            var dic = new Dictionary<int, int> { { ProductId, ProductQty + 1 } };
+            Assert.ThrowsAsync<ProductIsOutOfStockException>(() => service.CreateOrderAsync(dic, BuyerId));
 
         }
 
@@ -192,8 +192,8 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
         {
             IList<Product> products = new List<Product>
             {
-                new Product(productId, "Test", seller, price, productQty),
-                new Product(productId + 1, "Test2", seller, price * 2, productQty)
+                new Product(ProductId, "Test", seller, Price, ProductQty),
+                new Product(ProductId + 1, "Test2", seller, Price * 2, ProductQty)
             };
             return products;
         }

@@ -13,12 +13,13 @@ namespace Cm.Api.Common.CustomExceptions
         /// <param name="message"></param>
         public EntityNotFoundException(string message) : base(message)
         {
-
         }
 
+        /// <summary>
+        /// Creates the new instance of the class with default message
+        /// </summary>
         public EntityNotFoundException() : base("Entity was not found")
         {
-
         }
     }
 }

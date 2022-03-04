@@ -139,7 +139,7 @@ namespace Cm.Tests.Api.Products.ProductsControllerClassTests
             };
 
             StringContent httpContent = ContentHelper.GetStringContent(model);
-            var response1 = await TestClientSeller.PostAsync("/products", httpContent);
+            await TestClientSeller.PostAsync("/products", httpContent);
 
             // Act
             var response2 = await TestClientSeller.PostAsync("/products", httpContent);

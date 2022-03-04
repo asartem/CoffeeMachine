@@ -21,7 +21,7 @@ namespace Cm.Tests.Api.Deposit.DepositsControllerClassTests
         private IUsersRepository usersRepository;
 
         [OneTimeSetUp]
-        public async Task OneTimeSetup()
+        public void OneTimeSetup()
         {
             ServiceProvider = TestDataServiceCollection.BuildServiceProvider();
             usersRepository = ServiceProvider.GetService<IUsersRepository>();

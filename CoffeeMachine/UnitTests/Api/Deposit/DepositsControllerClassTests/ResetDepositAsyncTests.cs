@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Cm.Tests.Api.Deposit.DepositsControllerClassTests
@@ -20,7 +19,7 @@ namespace Cm.Tests.Api.Deposit.DepositsControllerClassTests
         private IUsersRepository usersRepository;
 
         [OneTimeSetUp]
-        public async Task OneTimeSetup()
+        public void OneTimeSetup()
         {
             ServiceProvider = TestDataServiceCollection.BuildServiceProvider();
             usersRepository = ServiceProvider.GetService<IUsersRepository>();
@@ -38,27 +37,39 @@ namespace Cm.Tests.Api.Deposit.DepositsControllerClassTests
             TestClientBuyer = CreateClientWithToken(buyer);
         }
 
-        [Description("Should set deposit to zero")]
-        public async Task RestForUser_ZeroDeposit(int deposit)
+        [Test]
+        [Description("Should set deposit to zero for buyer")]
+        public async Task RestForBoyer_ZeroDeposit()
         {
             // Arrange
             // Act
             var response = await TestClientBuyer.PutAsync("/deposits/reset", null);
 
-            var resultAsString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<int>(resultAsString);
-
             // Assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(0, result);
         }
 
-        [Description("Should not allow to reset for anonymous")]
-        public async Task RestForSeller_Forbidden(int deposit)
+        [Test]
+        [Description("Should not allow to reset for seller")]
+        public async Task RestForSeller_Forbidden()
         {
             // Arrange
             // Act
-            HttpClient client = Factory.CreateClient();
+            var seller = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
+            var testClientSeller = CreateClientWithToken(seller);
+            var response = await testClientSeller.PutAsync("/deposits/reset", null);
+            
+            // Assert
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
+        }
+
+        [Test]
+        [Description("Should not allow to reset for anonymous")]
+        public async Task RestForAnonymous_Unauthorized()
+        {
+            // Arrange
+            // Act
+            var client = Factory.CreateClient();
             var response = await client.PutAsync("/deposits/reset", null);
             
             // Assert

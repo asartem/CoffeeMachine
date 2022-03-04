@@ -16,17 +16,14 @@ namespace Cm.Tests.Api.Deposit.DepositsControllerClassTests
     {
         protected HttpClient TestClientBuyer { get; set; }
         protected IServiceProvider ServiceProvider;
-        private User seller;
         private User buyer;
         private IUsersRepository usersRepository;
 
         [OneTimeSetUp]
-        public async Task OneTimeSetup()
+        public void OneTimeSetup()
         {
             ServiceProvider = TestDataServiceCollection.BuildServiceProvider();
             usersRepository = ServiceProvider.GetService<IUsersRepository>();
-
-            seller = (await usersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).First();
         }
         
 

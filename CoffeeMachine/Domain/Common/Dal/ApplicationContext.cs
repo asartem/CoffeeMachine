@@ -5,20 +5,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cm.Domain.Common.Dal
 {
+    /// <summary>
+    /// Db context
+    /// </summary>
     public class ApplicationContext : DbContext
     {
+        /// <summary>
+        /// Creates the instance of the class
+        /// </summary>
+        /// <param name="options"></param>
         public ApplicationContext(DbContextOptions options)
             : base(options)
         {
         }
 
+        /// <summary>
+        /// Setup configuration
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             ConfigureProducts(modelBuilder);
-            ConfigureUsers(modelBuilder);
+            ConfigureUsersAndRoles(modelBuilder);
         }
 
+        /// <summary>
+        /// Add data about products
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         private void ConfigureProducts(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().ToTable("Products");
@@ -27,7 +42,11 @@ namespace Cm.Domain.Common.Dal
 
         }
 
-        private void ConfigureUsers(ModelBuilder modelBuilder)
+        /// <summary>
+        /// Add data about users and roles
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        private void ConfigureUsersAndRoles(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(user => user.Id);

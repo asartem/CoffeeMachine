@@ -8,16 +8,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cm.Domain.Common.Dal
 {
+    /// <summary>
+    /// Basic repository for any instance
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Repository<T> : IRepository<T> where T : class, IEntity, new()
     {
+        /// <summary>
+        /// Db context
+        /// </summary>
         public readonly ApplicationContext Context;
 
+
+        /// <summary>
+        /// Creates the new instance of the class
+        /// </summary>
+        /// <param name="context"></param>
         public Repository(ApplicationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
         
-
+        /// <summary>
+        /// Returns entity by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual async Task<T> GetAsync(int id)
         {
             if (id < 1)
@@ -28,13 +44,13 @@ namespace Cm.Domain.Common.Dal
             T result = await Context.Set<T>().FindAsync(id);
             return result;
         }
+        
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
-        {
-            var result = await Context.Set<T>().ToListAsync();
-            return result;
-        }
-
+        /// <summary>
+        /// Searches for entity by criteria
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression)
         {
             if (expression == null)
@@ -45,6 +61,11 @@ namespace Cm.Domain.Common.Dal
             return await queryable.ToListAsync();
         }
 
+        /// <summary>
+        /// Creates or updates entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public virtual async Task AddAsync(T entity)
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
@@ -62,6 +83,11 @@ namespace Cm.Domain.Common.Dal
             await SaveContextAsync();
         }
 
+        /// <summary>
+        /// Removes entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task RemoveAsync(T entity)
         {
             if (entity == null)
@@ -118,6 +144,9 @@ namespace Cm.Domain.Common.Dal
             disposed = true;
         }
 
+        /// <summary>
+        /// Cleanup repistory
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

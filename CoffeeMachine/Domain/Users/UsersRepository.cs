@@ -13,6 +13,10 @@ namespace Cm.Domain.Users
     /// </summary>
     public class UsersRepository : Repository<User>, IUsersRepository
     {
+        /// <summary>
+        /// Create the instance of the class
+        /// </summary>
+        /// <param name="context"></param>
         public UsersRepository(ApplicationContext context) : base(context)
         {
         }
@@ -37,22 +41,7 @@ namespace Cm.Domain.Users
             User result = await q.SingleOrDefaultAsync();
             return result;
         }
-
-
-        /// <summary>
-        /// Loads all users
-        /// </summary>
-        /// <returns></returns>
-        public override async Task<IEnumerable<User>> GetAllAsync()
-        {
-            var result = await Context.Set<User>()
-                .Include(x => x.Role)
-                .ToListAsync();
-
-            return result;
-        }
-
-
+        
 
         /// <summary>
         /// Finds the required entities

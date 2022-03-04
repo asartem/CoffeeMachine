@@ -29,16 +29,20 @@ namespace Cm.Domain.Users
         /// User's deposit
         /// </summary>
         public int Deposit { get; set; }
-        
+
         /// <summary>
         /// Role 
         /// </summary>
         public UserRole Role { get; set; } // TODO: can be extended to 1-to-many Roles per User in future
 
-        public User()
-        {
-        }
+        /// <summary>
+        /// Create the instance of the class
+        /// </summary>
+        public User() { }
 
+        /// <summary>
+        /// Create the instance of the class
+        /// </summary>
         public User(string name, string password, int deposit, UserRole role)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));

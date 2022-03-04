@@ -13,12 +13,6 @@ namespace Cm.Domain.Purchases.Exceptions
         /// <param name="message"></param>
         public EntityNotFoundException(string message) : base(message)
         {
-
-        }
-
-        public EntityNotFoundException() : base("Entity was not found")
-        {
-
         }
     }
 }

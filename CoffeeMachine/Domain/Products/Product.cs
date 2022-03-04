@@ -35,8 +35,16 @@ namespace Cm.Domain.Products
         /// </summary>
         public User Seller { get; set; }
 
+        /// <summary>
+        /// Creates the new instance of the class
+        /// </summary>
+        /// <param name=""></param>
         public Product() { }
 
+        /// <summary>
+        /// Creates the new instance of the class
+        /// </summary>
+        /// <param name=""></param>
         public Product(string name, User seller, int price, int qty)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name)); ;
@@ -49,6 +57,10 @@ namespace Cm.Domain.Products
             Seller = seller ?? throw new ArgumentNullException(nameof(qty));
         }
 
+        /// <summary>
+        /// Creates the new instance of the class
+        /// </summary>
+        /// <param name=""></param>
         public Product(int id, string name, User seller, int price, int qty) : this(name, seller, price, qty)
         {
             if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));

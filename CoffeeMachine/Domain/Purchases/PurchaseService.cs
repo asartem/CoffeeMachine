@@ -154,6 +154,9 @@ namespace Cm.Domain.Purchases
 
         }
 
+        /// <summary>
+        /// Cleanup service
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
