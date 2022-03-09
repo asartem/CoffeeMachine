@@ -21,7 +21,7 @@ namespace Cm.Api.Api.Users
     [Authorize]
     [Route("/[controller]")]
     [ApiController]
-    public class DepositsController : ApiControllerBase
+    public class UsersController : ApiControllerBase
     {
         /// <summary>
         /// Users repository
@@ -33,15 +33,16 @@ namespace Cm.Api.Api.Users
         /// </summary>
         public IRepository<UserRole> UserRolesRepository { get; }
 
+
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="usersRepository"></param>
         /// <param name="userRolesRepository"></param>
         /// <param name="logger"></param>
-        public DepositsController(IUsersRepository usersRepository,
+        public UsersController(IUsersRepository usersRepository,
                                 IRepository<UserRole> userRolesRepository,
-                                  ILogger<DepositsController> logger) : base(logger)
+                                  ILogger<UsersController> logger) : base(logger)
         {
             UsersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
             UserRolesRepository = userRolesRepository ?? throw new ArgumentNullException(nameof(userRolesRepository));
@@ -128,13 +129,13 @@ namespace Cm.Api.Api.Users
                 throw new ModelValidationException(ModelState.Values);
             }
 
-            bool isSellerExisting =
-                (await UsersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).Any();
+            //bool isSellerExisting =
+            //    (await UsersRepository.FindAsync(x => x.Role.Name == UserRoles.Seller)).Any();
 
-            if (isSellerExisting)
-            {
-                return Conflict("Seller already exist. Only one seller is allowed");
-            }
+            //if (isSellerExisting)
+            //{
+            //    return Conflict("Seller already exist. Only one seller is allowed");
+            //}
 
             User user = await CreateUserAsync(model, UserRoles.Seller);
             UserDto userDto = new UserDto(user);

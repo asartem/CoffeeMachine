@@ -9,6 +9,7 @@ using Cm.Domain.Purchases.Exceptions;
 using Cm.Domain.Users;
 using Cm.Domain.Users.Roles;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
@@ -45,6 +46,13 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
         [Description("Should purchase single item and call all save repository methods")]
         public void SingleProduct_AllSaved()
         {
+
+            IDictionary<int, int> dic1 = new Dictionary<int, int>();
+            dic1.Add(1,2);
+
+            var res = JsonConvert.SerializeObject(dic1);
+
+
             IList<Product> products = new List<Product>
             {
                 new Product(ProductId, "Test", seller, Price, ProductQty)

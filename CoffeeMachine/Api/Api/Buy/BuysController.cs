@@ -47,6 +47,7 @@ namespace Cm.Api.Api.Buy
         /// <response code="400">If request body is null or invalid</response>    
         [HttpPost, Route("")]
         [Authorize(Roles = UserRoles.Buyer)]
+        //[AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Produces("application/json")]
