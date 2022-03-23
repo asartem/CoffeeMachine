@@ -47,12 +47,6 @@ namespace Cm.Tests.Domain.Purchases.PurchaseServiceClassTests
         public void SingleProduct_AllSaved()
         {
 
-            IDictionary<int, int> dic1 = new Dictionary<int, int>();
-            dic1.Add(1,2);
-
-            var res = JsonConvert.SerializeObject(dic1);
-
-
             IList<Product> products = new List<Product>
             {
                 new Product(ProductId, "Test", seller, Price, ProductQty)

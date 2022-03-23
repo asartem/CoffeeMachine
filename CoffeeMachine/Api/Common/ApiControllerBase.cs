@@ -18,7 +18,7 @@ namespace Cm.Api.Common
         }
 
         /// <summary>
-        /// Logger for all controllers
+        /// Logger fAuthenticateServiceor all controllers
         /// </summary>
         public ILogger<ApiControllerBase> Logger { get; protected set; }
     }

@@ -13,7 +13,7 @@ namespace Cm.Api.Api.Buy.Models
     public class OrderDto
     {
         /// <summary>
-        /// Purchased products
+        /// Purchased products (items)
         /// </summary>
         public IList<SoldProductDto> PurchasedItems { get; set; } = new List<SoldProductDto>();
 

@@ -4,12 +4,12 @@ using Cm.Domain.Users;
 namespace Cm.Api.Api.Users.Models
 {
     /// <summary>
-    /// updates product for coffee machine
+    /// updates user for coffee machine
     /// </summary>
     public class UpdateUserDto {
 
         /// <summary>
-        /// user password
+        /// User password
         /// </summary>
         public string Password { get; set; }
         

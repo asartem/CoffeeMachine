@@ -6,7 +6,7 @@ using Cm.Domain.Users.Roles;
 namespace Cm.Api.Api.Users.Models
 {
     /// <summary>
-    /// Creates product for coffee machine
+    /// Creates user for coffee machine
     /// </summary>
     public class CreateUserDto
     {
@@ -17,13 +17,13 @@ namespace Cm.Api.Api.Users.Models
         public string UserName { get; set; }
 
         /// <summary>
-        /// Name of the user
+        /// User password
         /// </summary>
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
         /// <summary>
-        /// Name of the user
+        /// Deposit of the user
         /// </summary>
         [Required(ErrorMessage = "Deposit is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Deposit should be more then 0")]
